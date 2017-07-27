@@ -1,0 +1,20 @@
+{
+    "plugins": [
+        "anchors",
+        "anchor-navigation-ex",
+        "expandable-chapters",
+        "theme-comscore"
+    ],
+    "pluginsConfig": {
+        "anchor-navigation-ex": {
+            "showLevel": false,
+            "multipleH1": true,
+            "float": {
+                "showLevelIcon": true,
+                "level1Icon": "fa fa-hand-o-right",
+                "level2Icon": "fa fa-hand-o-right",
+                "level3Icon": "fa fa-hand-o-right"
+            }
+        }
+    }
+}
