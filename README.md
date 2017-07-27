@@ -1,3 +1,3 @@
-# Docker & Kubernetes 学习笔记
+# Kumu's Wiki 
 
-写这一系列文档主要的目的，一是梳理自己 `Docker` 和 `Kubernetes` 的知识体系；二是因为 `Docker` 和 `Kubernetes` 迭代速度比较快，很多新的特性已经相对较为陌生了，所以在写系列文章的时候刚好可以结合最新版本实践一下。
+因为平时的一些知识积累都是偏碎片化的，基本是不成体系的，所以建立了这个项目，主要的目的是针对以前的知识系统性的去整合。笔者会不定期的更新，可以通过 [blog.opskumu.com/wiki](http://blog.opskumu.com/wiki) 访问。
