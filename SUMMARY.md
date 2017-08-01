@@ -6,7 +6,7 @@
 
 * Docker 笔记
     * [Docker 理论](moby/chapter1.md)
-    * Docker 安装
+    * [Docker 安装](moby/chapter2.md)
     * Docker 命令
     * Docker 日志
     * Docker 网络
