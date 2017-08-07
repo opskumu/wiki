@@ -23,6 +23,67 @@
 
 ### CentOS7 Docker 安装
 
-关于 Docker 社区版在 CentOS 上的安装，官网也提供了教程 [Get Docker CE for CentOS](https://docs.docker.com/engine/installation/linux/docker-ce/centos/)。
+关于 Docker 社区版在 CentOS 上的安装，官网提供了教程 [Get Docker CE for CentOS](https://docs.docker.com/engine/installation/linux/docker-ce/centos/)，最新版本的 Docker CE 本文暂时不做介绍，以 CentOS 源提供版本为主。
+
+```
+# cat /etc/centos-release
+CentOS Linux release 7.3.1611 (Core)
+```
+
+Docker 已收录在 `CentOS-Extras` 软件库内，可以直接通过如下方式安装
+
+```
+yum install -y docker
+```
+
+当前通过 CentOS 源默认安装版本为 `1.12.6`。`1.12.6` 默认配置如下：
+
+```
+# grep -vE '^$|^#' /etc/sysconfig/docker
+OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false'
+if [ -z "${DOCKER_CERT_PATH}" ]; then
+    DOCKER_CERT_PATH=/etc/docker
+fi
+```
+
+默认源除了提供 `1.12.6` 以外，还提供一个 `docker-latest` 的版本，该版本为 `1.13.1`，可以通过以下方式安装：
+
+```
+yum install -y docker-latest
+```
+
+关于 `docker-latest` 更详细信息可以参考红帽官方介绍 [Introducing docker-latest for RHEL 7 and RHEL Atomic Hos](https://access.redhat.com/articles/2317361)，笔者不建议直接使用该软件版本。
+
+如果要安装一个较新的版本，还可以通过加入以下软件库实现：
+
+```
+[virt7-docker-common-candidate]
+name=virt7-docker-common-candidate
+baseurl=https://cbs.centos.org/repos/virt7-docker-common-candidate/x86_64/os/
+enabled=1
+gpgcheck=0
+```
+
+```
+yum install -y docker --disablerepo=extras
+```
+
+> __注：__ 经过实际测试，当前 virt7-docker-common-candidate 库 `docker-1.13.1-17.git27e468e.el7.x86_64` 版本因为包依赖问题安装不了，后续会继续关注。
+```
+Error: Package: 2:docker-1.13.1-17.git27e468e.el7.x86_64 (virt7-docker-common-candidate)
+           Requires: atomic-registries
+Error: Package: 2:docker-1.13.1-17.git27e468e.el7.x86_64 (virt7-docker-common-candidate)
+           Requires: container-storage-setup
+ You could try using --skip-broken to work around the problem
+ You could try running: rpm -Va --nofiles --nodigest
+```
+
+> 关于 Docker `1.13` 和 `1.12` 版本的区别可以参见 [Docker 1.13.0 详细更新日志](http://dockone.io/article/1834)
 
 ## Docker 配置
+
+* /etc/sysconfig/docker
+* /etc/sysconfig/docker-storage
+* /etc/sysconfig/docker-network
+
+Docker 从 `1.12` 开始支持通过 `/etc/docker/daemon.js` 文件管理 Docker daemon 的配置选项。
