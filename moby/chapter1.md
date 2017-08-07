@@ -24,6 +24,6 @@
 
 ### Docker Registry
 
-`Docker Registry` 用来存放 `Docker` 镜像，如果把 `Docker` 镜像比作集装箱的话，那么 `Docker Registry` 可比喻成装载集装箱的大货轮。`Docker Registry` 有公有和私有的概念，`Docker` 官方 `Registry` 为 [Docker Hub](https://hub.docker.com)，国内的如阿里云、网易蜂巢、时速云等也均有相关仓库。Docker 镜像仓库起到了一个存储分发 `Docker` 镜像的作用。
+`Docker Registry` 用来存放 `Docker` 镜像，如果把 `Docker` 镜像比作集装箱的话，那么 `Docker Registry` 可比喻成装载集装箱的大货轮。`Docker Registry` 有公有和私有的概念，`Docker` 官方 `Registry` 为 [Docker Hub](https://hub.docker.com)，国内的如阿里云、网易蜂巢、时速云等也均有相关仓库。Docker 镜像仓库起到了一个集中存储和分发 `Docker` 镜像的作用。
 
 ![How To Install and Use Docker on Ubuntu 16.04](https://community-cdn-digitalocean-com.global.ssl.fastly.net/assets/tutorials/images/large/Docker_Install_mostov_twitter-_-facebook-2.png?1481222610)
