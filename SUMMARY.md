@@ -20,6 +20,12 @@
     * [Kubernetes 集群构建](k8s/chapter2.md)
         * [从头开始构建 Kubernetes 集群](k8s/chapter2-1.md)
         * [通过 Ansible 自动构建 Kubernetes 集群](k8s/chapter2-2.md)
+    * Kubernetes 配置
+        * [apiserver](k8s/chapter3-1.md)
+        * [controller-manager](k8s/chapter3-2.md)
+        * [scheduler](k8s/chapter3-3.md)
+        * [kube-proxy](k8s/chapter3-4.md)
+        * [kubelet](k8s/chapter3-5.md)
     * Kubernetes 网络选型
         * Flannel
         * Calico
