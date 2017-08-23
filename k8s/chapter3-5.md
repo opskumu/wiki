@@ -10,7 +10,9 @@ Usage of ./kubelet:
       ... ...
 ```
 
-## 基本配置项
+## 配置说明
+
+### 基本配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -34,7 +36,7 @@ Usage of ./kubelet:
 | --resolv-conf string |	DNS 解析文件指定，默认为 `"/etc/resolv.conf"` |
 | --root-dir string | 用于管理 kubelet 文件（volume mounts 等）目录路径，默认 `"/var/lib/kubelet"` |
 
-## 认证配置项
+### 认证配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -46,7 +48,7 @@ Usage of ./kubelet:
 | --tls-cert-file string | 包含 x509 证书的文件路径，用于提供 HTTPS 服务，如果未提供 `--tls-cert-file` 和 `--tls-private-key-file`，则会为公用地址生成自签名证书和密钥，并保存到 `--cert-dir` 目录 |
 | --tls-private-key-file string | 包含 X509 匹配 `--tls-cert-file` 私钥的文件路径 |
 
-## 日志配置项
+### 日志配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -59,7 +61,7 @@ Usage of ./kubelet:
 | --stderrthreshold severity | 超过此阈值的日志将转到 stderr，默认为 `2` |
 | -v, --v Level | log level for V logs |
 
-## Docker 配置项
+### Docker 配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -70,7 +72,7 @@ Usage of ./kubelet:
 | --docker-exec-handler string | 容器中执行命令 Handler 指定，有 `"native"` 和 `"nsenter"` 可选，默认 `"native"` |
 | --docker-only | 除了根信息统计之外，只报告 docker 容器统计数据 |
 
-## 镜像配置项
+### 镜像配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -82,7 +84,7 @@ Usage of ./kubelet:
 | --registry-qps int32 | 如果 > 0, 限制 registry pull QPS 为指定值，如果为 0, 则不限制，默认 `5` |
 | --serialize-image-pulls | 一次只 pull 一个镜像。在 docker daemon 版本 < 1.9 或者使用 Aufs 存储驱动的时候不建议修改默认值。具体可以参见 Issue #10959，默认 `true` |
 
-## 网络配置项
+### 网络配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -93,7 +95,7 @@ Usage of ./kubelet:
 
 > __注：__ Kubernetes `v1.7` 版本笔者没有实际测试 Calico cni 网络，当前运行 Calico cni 网络的环境版本为 `v1.5.7`，后续实测之后进一步更新。
 
-## Volume 卷配置项
+### Volume 卷配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -102,11 +104,11 @@ Usage of ./kubelet:
 | --volume-plugin-dir string | <警告: Alpha 特性> 指定搜索其他第三方卷插件的目录绝对路径 ，默认 `"/usr/libexec/kubernetes/kubelet-plugins/volume/exec/"` |
 | --volume-stats-agg-period duration |  指定 kubelet 所有 pod 统计以及缓存卷磁盘使用率的时间间隔。如果要禁用，设置该值为 0 即可，默认 `1m0s` |
 
-## cgroup/namespace 配置项
+### cgroup/namespace 配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
-| --cgroup-driver string | kubelet 操作主机 cgroups 驱动选择，`cgroupfs` 和 `systemd` 值可供选择，默认 `"cgroupfs"`。__CentOS 7 推荐使用 `"systemd"`__ |
+| --cgroup-driver string | kubelet 操作主机 cgroups 驱动选择，`cgroupfs` 和 `systemd` 值可供选择，默认 `"cgroupfs"`。__CentOS 7 设置为 `"systemd"`__ |
 | --cgroup-root string | 针对 pod 可选项 root cgroup，默认 `''`，表示使用容器运行时的默认值 |
 | --cgroups-per-qos | Enable creation of QoS cgroup hierarchy, if true top level QoS and pod cgroups are created. 默认 `true` |
 | --host-ipc-sources stringSlice | 指定允许使用主机 ipc namespace pod 列表，默认 `[*]`，逗号分隔 |
@@ -120,7 +122,7 @@ Usage of ./kubelet:
 
 > __注：__ cgroup 相关选项有些笔者没有深入相关调研，建议使用默认值即可
 
-## event 配置项
+### event 配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -131,7 +133,7 @@ Usage of ./kubelet:
 
 > __注：__ event 配置项笔者也没有进行相关设置，建议使用默认值即可
 
-## Pod `eviction` 配置项
+### Pod `eviction` 配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -142,4 +144,34 @@ Usage of ./kubelet:
 | --eviction-minimum-reclaim string | 最小回收值设置，（例如 `"imagefs.available=2Gi"`），表示当 kubelet 资源处于压力状态下执行 pod eviction 时回收的最小资源量 |
 | --eviction-pressure-transition-period duration | 在转移 eviction pressure 条件前，kubelet 需要等待的时间，默认 `5m0s`) |
 
-关于 kubelet eviction 策略可参考这篇文章 [Learn how kubelet eviction policies impact cluster rebalancing](https://blog.kublr.com/learn-how-kubelet-eviction-policies-impact-cluster-rebalancing-2e976ebc53ea)
+关于 kubelet eviction 策略可参考：
+
+* [Eviction Policy](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#eviction-policy)
+* [Learn how kubelet eviction policies impact cluster rebalancing](https://blog.kublr.com/learn-how-kubelet-eviction-policies-impact-cluster-rebalancing-2e976ebc53ea)
+
+## 推荐配置项
+
+__/etc/kubernetes/kubelet__
+
+```
+###
+# kubernetes kubelet config
+
+# The address for the info server to serve on (set to 0.0.0.0 or "" for all interfaces)
+KUBELET_ADDRESS="--address=0.0.0.0"
+
+# The port for the info server to serve on
+KUBELET_PORT="--port=10250"
+
+# You may leave this blank to use the actual hostname 根据实际需求填写，默认主机名
+KUBELET_HOSTNAME="--hostname-override=<hostname>"
+
+# location of the api-server 根据实际需求填写，后续该配置会被废弃，--kubeconfig 替换
+KUBELET_API_SERVER="--api-servers=http://<apiserver>:8080"
+
+# pod infrastructure container 建议把 pause 组件 push 到私有内部镜像
+KUBELET_POD_INFRA_CONTAINER="--pod-infra-container-image=<private_registry>/google_containers/pause-amd64:3.0"
+
+# Add your own! --cluster-dns 根据实际选项填写
+KUBELET_ARGS="--cluster-dns=<kubedns-ip> --image-gc-high-threshold=85 --image-gc-low-threshold=70 --eviction-hard=memory.available<5Gi,nodefs.available<5Gi,imagefs.available<10Gi --eviction-minimum-reclaim=memory.available=2Gi,nodefs.available=2Gi,imagefs.available=2Gi --eviction-soft=memory.available<10Gi,nodefs.available<10Gi,imagefs.available<20Gi --eviction-soft-grace-period=memory.available=30s,nodefs.available=2m,imagefs.available=2m --cgroup-driver=systemd
+```
