@@ -1,4 +1,4 @@
-# Docker 安装与配置
+# Docker 安装
 
 ## 安装
 
@@ -57,38 +57,21 @@ yum install -y docker-latest
 如果要安装一个较新的版本，还可以通过加入以下软件库实现：
 
 ```
-[virt7-docker-common-candidate]
-name=virt7-docker-common-candidate
-baseurl=https://cbs.centos.org/repos/virt7-docker-common-candidate/x86_64/os/
+[virt7-container-common-candidate]
+name=virt7-container-common-candidate
+baseurl=https://cbs.centos.org/repos/virt7-container-common-candidate/x86_64/os/
 enabled=1
 gpgcheck=0
 ```
 
 ```
+yum install oci-systemd-hook oci-register-machine -y
 yum install -y docker --disablerepo=extras
+systemctl start docker
 ```
 
-> __注：__ 经过实际测试，当前 virt7-docker-common-candidate 库 `docker-1.13.1-17.git27e468e.el7.x86_64` 版本因为包依赖问题安装不了，后续会继续关注，毕竟使用的源是候选版本。
-```
-Error: Package: 2:docker-1.13.1-17.git27e468e.el7.x86_64 (virt7-docker-common-candidate)
-           Requires: atomic-registries
-Error: Package: 2:docker-1.13.1-17.git27e468e.el7.x86_64 (virt7-docker-common-candidate)
-           Requires: container-storage-setup
- You could try using --skip-broken to work around the problem
- You could try running: rpm -Va --nofiles --nodigest
-```
-
-> 关于 Docker `1.13` 和 `1.12` 版本的区别可以参见 [Docker 1.13.0 详细更新日志](http://dockone.io/article/1834)
+> 关于 Docker `1.13.x` 和 `1.12.x` 版本的区别可以参见 [Docker 1.13.0 详细更新日志](http://dockone.io/article/1834)
 
 ### Reference
 
-* [Installing Docker - CentOS-7](https://wiki.centos.org/Cloud/Docker)
-
-## Docker 配置
-
-* `/etc/sysconfig/docker`
-* `/etc/sysconfig/docker-storage`
-* `/etc/sysconfig/docker-network`
-* `/etc/docker/daemon.js`
-
-Docker 从 `1.12` 开始支持通过 `/etc/docker/daemon.js` 文件管理 Docker daemon 的配置选项。
+* [Installing Docker - CentOS-7](https://wiki.centos.org/Container/Tools)

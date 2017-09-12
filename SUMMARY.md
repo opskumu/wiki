@@ -1,12 +1,16 @@
 # Summary
 
-* [说明](README.md)
+* [About](README.md)
 
 # Docker
 
 * Docker 笔记
-    * [Docker 理论](moby/chapter1.md)
-    * [Docker 安装](moby/chapter2.md)
+    * Docker 理论
+        * [Docker 简述](moby/chapter1-1.md)
+        * [Docker 原理](moby/chapter1-2.md)
+    * Docker 配置
+        * [Docker 安装](moby/chapter2-1.md)
+        * [Docker 配置](moby/chapter2-2.md)
     * Docker 命令
     * Docker 日志
     * Docker 网络
