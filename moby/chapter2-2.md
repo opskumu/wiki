@@ -51,7 +51,7 @@ if [ -z "${DOCKER_CERT_PATH}" ]; then
 fi
 ```
 
-关于 docker daemon 配置选项，本文主要参考官方文档，最新文档以官方 [Daemon CLI reference(dockerd)](https://docs.docker.com/engine/reference/commandline/dockerd/) 为主。
+关于 docker daemon 配置选项，本文主要参考官方文档，最新说明以官方 [Daemon CLI reference(dockerd)](https://docs.docker.com/engine/reference/commandline/dockerd/) 为主。
 
 ### Daemon socket option
 
