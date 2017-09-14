@@ -55,7 +55,7 @@ fi
 
 ### Daemon socket option
 
-Docker daemon 可以三种不同类型的 Socket 监听 Docker API 请求：unix，tcp，fd。默认情况下，会创建一个名为 `/var/run/docker.sock` unix Socket 文件，该文件的访问权限需要是 root 权限或者属于 docker 组。如果有远程访问需求，那么则需要开启 tcp Socket。默认开启 tcp Socket，是没有任何加密和安全认证的，可以通过 HTTPS 加密 socket。
+Docker daemon 可以三种不同类型的 Socket 监听 Docker API 请求：unix，tcp，fd。默认情况下，会创建一个名为 `/var/run/docker.sock` 的 unix Socket 文件，该文件的访问权限需要是 root 权限或者属于 docker 组。如果有远程访问需求，那么则需要开启 tcp Socket。正常开启 tcp Socket，是没有任何加密和安全认证的，可以通过 HTTPS 等方式加密 tcp Socket，默认不建议开启 tcp Socket。
 
 > Note: If you’re using an HTTPS encrypted socket, keep in mind that only TLS1.0 and greater are supported. Protocols SSLv3 and under are not supported anymore for security reasons.
 
@@ -79,8 +79,6 @@ $ docker ps
 > 参考：[Enabling Non-root Users to Run Docker Commands](https://docs.oracle.com/cd/E37670_01/E75728/html/section_rdz_hmw_2q.html)
 
 通过 `-H` 选项可以指定 Docker daemon 使用的 Socket 类型，默认 unix Socket 方式，通过添加 `-H tcp://0.0.0.0:2375`  达到使用 tcp Socket 的方式，`0.0.0.0` 表示监听当前主机所有网络接口。
-
-> Note: 正常情况下，不建议开启 tcp Socket 远程访问。如果有相关需求，建议通过 HTTPS 等安全方式加密。
 
 ```
 # grep -vE '^#|^$' /etc/sysconfig/docker

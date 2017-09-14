@@ -1,10 +1,8 @@
 # Docker 安装
 
-## 安装
-
 上文说的 `Moby` 在 Docker 官网称为社区版，支持的系统可以参见 [Install Docker](https://docs.docker.com/engine/installation/)。从 Docker `17.03` 开始，Docker 使用基于时间的版本发行机制。支持的系统除了常见的 Linux 发行版外，还支持 macOS、Windows 系统。本文只介绍基于 macOS 和 CentOS 这两个系统的 Docker 安装，关于更多系统的安装方式参见前面提到的官网安装文档。
 
-### macOS Docker 安装
+## macOS Docker 安装
 
 关于 macOS Docker 的安装方式官方教程已经很详细了，[Install Docker for Mac](https://docs.docker.com/docker-for-mac/install/)。目前针对 Mac 系统，官方的 Docker 支持 `OS X El Capitan 10.11` 或者更新的 `macOS` 发行版，针对硬件也有限制，只支持 2010 或者更新的 Mac。
 
@@ -21,7 +19,7 @@
 
 > __注：__ macOS 上运行 Docker，需要注意的是删除镜像占用空间也不会释放，所以如果你的 Mac 磁盘不是很大的话，还是得悠着点用，具体的详情可以参见这个帖子 [Docker.qcow2 never shrinks - disk space usage leak in docker for mac](https://github.com/docker/for-mac/issues/371)
 
-### CentOS7 Docker 安装
+## CentOS7 Docker 安装
 
 关于 Docker 社区版在 CentOS 上的安装，官网提供了教程 [Get Docker CE for CentOS](https://docs.docker.com/engine/installation/linux/docker-ce/centos/)，最新版本的 Docker CE 本文暂时不做介绍，以 CentOS 源提供版本为主。
 

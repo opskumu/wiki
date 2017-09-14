@@ -1,10 +1,10 @@
 # Summary
 
-* [About](README.md)
+* [:)](README.md)
 
 # Docker
 
-* Docker 笔记
+* Docker
     * Docker 理论
         * [Docker 简述](moby/chapter1-1.md)
         * [Docker 原理](moby/chapter1-2.md)
@@ -19,7 +19,7 @@
 
 # Kubernetes
 
-* Kubernetes 笔记
+* Kubernetes
     * [Kubernetes 架构](k8s/chapter1.md)
     * [Kubernetes 集群构建](k8s/chapter2.md)
         * [从头开始构建 Kubernetes 集群](k8s/chapter2-1.md)
