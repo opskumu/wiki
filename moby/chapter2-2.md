@@ -12,16 +12,7 @@ Client:
  Git commit:      b5e3294/1.13.1
  Built:           Fri Aug 11 15:30:49 2017
  OS/Arch:         linux/amd64
-
-Server:
- Version:         1.13.1
- API version:     1.26 (minimum version 1.12)
- Package version: docker-1.13.1-25.gitb5e3294.el7.x86_64
- Go version:      go1.8.3
- Git commit:      b5e3294/1.13.1
- Built:           Fri Aug 11 15:30:49 2017
- OS/Arch:         linux/amd64
- Experimental:    false
+<output truncated>
 ```
 
 ## 相关配置文件
@@ -29,15 +20,15 @@ Server:
 基本配置文件：
 
 * `/etc/sysconfig/docker`
-* `/etc/sysconfig/docker-storage`
+* `/etc/sysconfig/docker-storage-setup`
 * `/etc/sysconfig/docker-network`
-* `/etc/docker/daemon.js`
+* `/etc/docker/daemon.json`
 
 systemd 服务配置：
 
 * `/usr/lib/systemd/system/docker.service`
 
-Docker 从 `1.12` 开始支持通过 `/etc/docker/daemon.js` 文件管理 Docker daemon 的配置选项。
+Docker 从 `1.12` 开始支持通过 `/etc/docker/daemon.json` 文件管理 Docker daemon 的配置选项。
 
 ## 具体配置说明
 
@@ -53,7 +44,7 @@ fi
 
 关于 docker daemon 配置选项，本文主要参考官方文档，最新说明以官方 [Daemon CLI reference(dockerd)](https://docs.docker.com/engine/reference/commandline/dockerd/) 为主。
 
-### Daemon socket option
+### Daemon socket 选项
 
 Docker daemon 可以三种不同类型的 Socket 监听 Docker API 请求：unix，tcp，fd。默认情况下，会创建一个名为 `/var/run/docker.sock` 的 unix Socket 文件，该文件的访问权限需要是 root 权限或者属于 docker 组。如果有远程访问需求，那么则需要开启 tcp Socket。正常开启 tcp Socket，是没有任何加密和安全认证的，可以通过 HTTPS 等方式加密 tcp Socket，默认不建议开启 tcp Socket。
 
@@ -100,3 +91,105 @@ Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docke
 > # listen using the default unix socket, and on 2 specific IP addresses on this host. 指定多种连接
 > $ sudo dockerd -H unix:///var/run/docker.sock -H tcp://192.168.59.106 -H tcp://10.10.10.2
 > ```
+
+### Daemon storage-driver 选项
+
+Docker daemon 当前支持以下几种镜像层存储驱动：
+
+* aufs
+* devicemapper
+* btrfs
+* zfs
+* overlay
+* overlay2
+
+以上关于不同类型的存储驱动，后续会具体介绍，这一章节只介绍基本的存储驱动配置项，针对 CentOS7 系统则选择使用 devicemapper、overlay、overlay2 居多。当前笔者通过 [Docker 安装](chapter2-1.md#centos7-docker-安装) 的默认存储驱动为 overlay2：
+
+```
+# docker info
+Containers: 0
+ Running: 0
+ Paused: 0
+ Stopped: 0
+Images: 0
+Server Version: 1.13.1
+Storage Driver: overlay2
+ Backing Filesystem: xfs
+ Supports d_type: true
+ Native Overlay Diff: false
+... ...
+```
+
+用户可以通过添加 `--storage-driver` 选项设置运行存储驱动，不过更推荐使用 `/etc/docker/daemon.json` 配置文件配置。
+
+通过添加 `--storage-driver` 选项指定存储驱动：
+
+```
+# grep -vE '^#|^$' /etc/sysconfig/docker
+OPTIONS='--selinux-enabled --log-driver=journald --storage-driver=devicemapper'
+if [ -z "${DOCKER_CERT_PATH}" ]; then
+    DOCKER_CERT_PATH=/etc/docker
+fi
+# systemctl restart docker
+# docker info
+... ...
+Storage Driver: devicemapper
+ Pool Name: docker-253:0-67599031-pool
+ Pool Blocksize: 65.54 kB
+ Base Device Size: 10.74 GB
+ Backing Filesystem: xfs
+ Data file: /dev/loop0
+ Metadata file: /dev/loop1
+... ...
+```
+
+> Note: 考虑到 `daemon.json` 是跨平台的，并且为了和系统初始化脚本配置冲突的问题，所以 Docker 官方推荐使用 `daemon.json` 方式代理 `--storage-driver` 选项方式。
+
+移除 `--storage-driver` 选项，并且在 `/etc/docker/daemon.json` 文件中添加配置，如果文件不存在则创建即可。
+
+```
+# cat /etc/docker/daemon.json
+{
+  "storage-driver": "devicemapper"
+}
+# systemctl restart docker
+```
+
+> Note: 以上指定存储驱动为 devicemapper，如果不添加其它选项，那么此时属于 `loop-lvm` 模式，这种模式下因为回环设备的原因，性能比较差，只适用于测试环境下使用。针对生产环境，则建议使用 `direct-lvm` 模式，后文会专门针对存储驱动做详细介绍。
+
+### Docker runtime execution 选项
+
+通过指定 `native.cgroupdriver` 选项，可以配置容器 cgroups 管理。
+
+```
+# docker info | grep 'Cgroup Driver'       // 可以看到 CentOS7 默认 cgroup 驱动为 systemd
+Cgroup Driver: systemd
+# cat /usr/lib/systemd/system/docker.service
+// CentOS7 的运行时选项是直接写死在 docker.service 文件中的，如果要修改，则需要修改该文件。
+... ...
+ExecStart=/usr/bin/dockerd-current \
+          --add-runtime oci=/usr/libexec/docker/docker-runc-current \
+          --default-runtime=oci \
+          --authorization-plugin=rhel-push-plugin \
+          --containerd /run/containerd.sock \
+          --exec-opt native.cgroupdriver=cgroupfs \
+          --userland-proxy-path=/usr/libexec/docker/docker-proxy-current \
+... ...
+# systemctl daemon-reload
+# systemctl restart docker
+# docker info | grep 'Cgroup Driver'
+Cgroup Driver: cgroupfs
+```
+
+> Note: 如无特色需求，Cgroup Driver 保持默认即可。
+
+### Daemon DNS 选项
+
+| 选项 | 说明 |
+| :-- | :-- |
+| --dns 8.8.8.8 | 设置容器 DNS |
+| --dns-search example.com | 设置容器 search domain |
+
+### Insecure registries 选项
+
+Docker 认为一个私有仓库要么安全的，要么就是不安全的。以私有仓库 myregistry:5000 为例，一个安全的镜像仓库需要使用 TLS，并且需要拷贝 CA 证书到每台 Docker 主机 `/etc/docker/certs.d/myregistry:5000/ca.crt` 上。
