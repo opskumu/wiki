@@ -190,6 +190,105 @@ Cgroup Driver: cgroupfs
 | --dns 8.8.8.8 | 设置容器 DNS |
 | --dns-search example.com | 设置容器 search domain |
 
-### Insecure registries 选项
+### Docker Registry 相关选项
+
+#### insecure registries
 
 Docker 认为一个私有仓库要么安全的，要么就是不安全的。以私有仓库 myregistry:5000 为例，一个安全的镜像仓库需要使用 TLS，并且需要拷贝 CA 证书到每台 Docker 主机 `/etc/docker/certs.d/myregistry:5000/ca.crt` 上。
+
+通过选项 `--insecure-registry` 可以标识指定私有仓库为不安全的。 如 `--insecure-registry myregistry:5000` 标识为 myregistry:5000 私有仓库为不安全的，而 `--insecure-registry 10.1.0.0/16` 则告诉 Docker daemon 所有域名被解析到这个网段中底子的镜像仓库都被标识为不安全的。一个不安全的镜像只有被标识为不安全的时候，才可以正常的进行 docker pull、push、search 等操作。
+
+#### lagacy registries
+
+默认情况下，Registry V1 协议是被禁用的，Docker daemon 不会在执行 push、pull 以及 login 操作的时候去尝试通过 V1 协议去连接。可以通过 `--disable-legacy-registry=false` 启用该选项。需要注意的是，在 Docker 17.12 版本中该选项将会被移除，不再支持 Registry V1。
+
+> Note: Interaction v1 registries will no longer be supported in Docker v17.12, and the disable-legacy-registry configuration option will be removed.
+
+### Default ulimit settings
+
+选项 `--default-ulimit` 可以设置所有容器的默认 ulimit 值，通过 `--default-ulimit nproc=10240:10240 --default-ulimit nofile=65535:65535` 设置容器的 nproc 和 nofile 值。如果该值没有设置，那么 ulimit 相关会继承宿主的设置。如果 docker run 设置 ulimit 相关，则会覆盖默认值，也就是说 docker run 优先级最高。
+
+### Daemon configuration file
+
+`--config-file` 选项用来指定 daemon 的 JSON 格式配置文件，默认 Linux 上 JSON 格式的配置文件为 `/etc/docker/daemon.josn`。
+
+以下为所有支持配置在 JSON 文件中的选项:
+
+```
+{
+	"authorization-plugins": [],
+	"data-root": "",
+	"dns": [],
+	"dns-opts": [],
+	"dns-search": [],
+	"exec-opts": [],
+	"exec-root": "",
+	"experimental": false,
+	"storage-driver": "",
+	"storage-opts": [],
+	"labels": [],
+	"live-restore": true,
+	"log-driver": "",
+	"log-opts": {},
+	"mtu": 0,
+	"pidfile": "",
+	"cluster-store": "",
+	"cluster-store-opts": {},
+	"cluster-advertise": "",
+	"max-concurrent-downloads": 3,
+	"max-concurrent-uploads": 5,
+	"default-shm-size": "64M",
+	"shutdown-timeout": 15,
+	"debug": true,
+	"hosts": [],
+	"log-level": "",
+	"tls": true,
+	"tlsverify": true,
+	"tlscacert": "",
+	"tlscert": "",
+	"tlskey": "",
+	"swarm-default-advertise-addr": "",
+	"api-cors-header": "",
+	"selinux-enabled": false,
+	"userns-remap": "",
+	"group": "",
+	"cgroup-parent": "",
+	"default-ulimits": {},
+	"init": false,
+	"init-path": "/usr/libexec/docker-init",
+	"ipv6": false,
+	"iptables": false,
+	"ip-forward": false,
+	"ip-masq": false,
+	"userland-proxy": false,
+	"userland-proxy-path": "/usr/libexec/docker-proxy",
+	"ip": "0.0.0.0",
+	"bridge": "",
+	"bip": "",
+	"fixed-cidr": "",
+	"fixed-cidr-v6": "",
+	"default-gateway": "",
+	"default-gateway-v6": "",
+	"icc": false,
+	"raw-logs": false,
+	"allow-nondistributable-artifacts": [],
+	"registry-mirrors": [],
+	"seccomp-profile": "",
+	"insecure-registries": [],
+	"disable-legacy-registry": false,
+	"no-new-privileges": false,
+	"default-runtime": "runc",
+	"oom-score-adjust": -500,
+	"runtimes": {
+		"runc": {
+			"path": "runc"
+		},
+		"custom": {
+			"path": "/usr/local/bin/my-runc-replacement",
+			"runtimeArgs": [
+				"--debug"
+			]
+		}
+	}
+}
+```
