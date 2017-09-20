@@ -8,11 +8,12 @@
     * Docker 理论
         * [Docker 简述](moby/chapter1-1.md)
         * [Docker 原理](moby/chapter1-2.md)
-    * Docker 配置
+    * Docker 安装和配置
         * [Docker 安装](moby/chapter2-1.md)
         * [Docker 配置](moby/chapter2-2.md)
     * Docker 命令
-    * Docker 日志
+        * [基础命令](moby/chapter3-1.md)
+        * [Dockerfile](moby/chapter3-2.md)
     * Docker 网络
     * Docker 存储
     * Docker 编排

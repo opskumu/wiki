@@ -1,19 +1,6 @@
 # Docker 配置
 
-以下的配置说明，统一以 `CentOS7.3` 系统安装 Docker 版本说明，其它系统版本可能会有不同，这里不作具体介绍。
-
-```
-# docker version
-Client:
- Version:         1.13.1
- API version:     1.26
- Package version: docker-1.13.1-25.gitb5e3294.el7.x86_64
- Go version:      go1.8.3
- Git commit:      b5e3294/1.13.1
- Built:           Fri Aug 11 15:30:49 2017
- OS/Arch:         linux/amd64
-<output truncated>
-```
+以下配置说明，统一以 `CentOS7.3` 为系统环境，其它系统版本可能会有所不同。
 
 ## 相关配置文件
 
