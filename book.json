@@ -1,5 +1,7 @@
 {
     "plugins": [
+        "-sharing",
+        "github",
         "anchors",
         "anchor-navigation-ex",
         "expandable-chapters",
@@ -15,6 +17,9 @@
                 "level2Icon": "fa fa-hand-o-right",
                 "level3Icon": "fa fa-hand-o-right"
             }
+        },
+        "github": {
+            "url": "https://github.com/opskumu"
         }
     }
 }
