@@ -197,7 +197,7 @@ Docker 认为一个私有仓库要么安全的，要么就是不安全的。以�
 
 ### Daemon configuration file
 
-`--config-file` 选项用来指定 daemon 的 JSON 格式配置文件，默认 Linux 上 JSON 格式的配置文件为 `/etc/docker/daemon.josn`。
+`--config-file` 选项用来指定 daemon 的 JSON 格式配置文件，默认 Linux 上 JSON 格式的配置文件为 `/etc/docker/daemon.json`。
 
 以下为所有支持配置在 JSON 文件中的选项:
 

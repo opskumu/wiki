@@ -7,7 +7,7 @@
 * Docker
     * [概述](moby/chapter1.md)
     * [安装](moby/chapter2.md)
-    * [基本配置](moby/chapter3.md)
+    * [配置说明](moby/chapter3.md)
     * [基础命令](moby/chapter4.md)
     * 镜像构建
         * [Dockerfile](moby/chapter4-1.md)
