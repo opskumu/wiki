@@ -9,9 +9,7 @@
     * [安装](moby/chapter2.md)
     * [配置说明](moby/chapter3.md)
     * [基础命令](moby/chapter4.md)
-    * 镜像构建
-        * [Dockerfile](moby/chapter4-1.md)
-        * [最佳实践](moby/chapter4-2)
+    * [镜像构建](moby/chapter5.md)
     * 网络
     * 存储
 

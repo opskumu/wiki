@@ -130,7 +130,7 @@ Storage Driver: devicemapper
 ... ...
 ```
 
-> Note: 考虑到 `daemon.json` 是跨平台的，并且为了和系统初始化脚本配置冲突的问题，所以 Docker 官方推荐使用 `daemon.json` 方式代理 `--storage-driver` 选项方式。
+> Note: 考虑到 `daemon.json` 是跨平台的，并且为了和系统初始化脚本配置冲突的问题，所以 Docker 官方推荐使用 `daemon.json` 方式代替 `--storage-driver` 选项方式。
 
 移除 `--storage-driver` 选项，并且在 `/etc/docker/daemon.json` 文件中添加配置，如果文件不存在则创建即可。
 
@@ -142,7 +142,7 @@ Storage Driver: devicemapper
 # systemctl restart docker
 ```
 
-> Note: 以上指定存储驱动为 devicemapper，如果不添加其它选项，那么此时属于 `loop-lvm` 模式，这种模式下因为回环设备的原因，性能比较差，只适用于测试环境下使用。针对生产环境，则建议使用 `direct-lvm` 模式，后文会专门针对存储驱动做详细介绍。
+> Note: 以上指定存储驱动为 devicemapper，如果不添加其它选项，那么此时属于 `loop-lvm` 模式，这种模式下因为回环设备的原因，性能比较差，只适用于测试环境下使用。针对生产环境，则建议使用 `direct-lvm` 模式，后文会专门针对存储驱动做详细介绍。
 
 ### Docker runtime execution 选项
 
@@ -152,7 +152,7 @@ Storage Driver: devicemapper
 # docker info | grep 'Cgroup Driver'       // 可以看到 CentOS7 默认 cgroup 驱动为 systemd
 Cgroup Driver: systemd
 # cat /usr/lib/systemd/system/docker.service
-// CentOS7 的运行时选项是直接写死在 docker.service 文件中的，如果要修改，则需要修改该文件。
+// CentOS7 的运行时选项是直接写死在 docker.service 文件中的，如果要修改，则需要修改该文件。
 ... ...
 ExecStart=/usr/bin/dockerd-current \
           --add-runtime oci=/usr/libexec/docker/docker-runc-current \
@@ -181,7 +181,7 @@ Cgroup Driver: cgroupfs
 
 #### insecure registries
 
-Docker 认为一个私有仓库要么安全的，要么就是不安全的。以私有仓库 myregistry:5000 为例，一个安全的镜像仓库需要使用 TLS，并且需要拷贝 CA 证书到每台 Docker 主机 `/etc/docker/certs.d/myregistry:5000/ca.crt` 上。
+Docker 认为一个私有仓库要么安全的，要么就是不安全的。以私有仓库 myregistry:5000 为例，一个安全的镜像仓库需要使用 TLS，并且需要拷贝 CA 证书到每台 Docker 主机 `/etc/docker/certs.d/myregistry:5000/ca.crt` 上。
 
 通过选项 `--insecure-registry` 可以标识指定私有仓库为不安全的。 如 `--insecure-registry myregistry:5000` 标识为 myregistry:5000 私有仓库为不安全的，而 `--insecure-registry 10.1.0.0/16` 则告诉 Docker daemon 所有域名被解析到这个网段中底子的镜像仓库都被标识为不安全的。一个不安全的镜像只有被标识为不安全的时候，才可以正常的进行 docker pull、push、search 等操作。
 

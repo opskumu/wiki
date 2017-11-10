@@ -14,7 +14,7 @@ Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
 Run a command in a new container
 ```
 
-### Detached vs foreground
+### Detached vs foreground
 
 容器的运行方式有前台和后台（detached）两种模式，默认为前台运行。
 
@@ -22,7 +22,7 @@ Run a command in a new container
 
 | 选项 | 说明 |
 | :--  | :--  |
-| -d, --detach | 后台运行容器，并输出容器 id |
+| -d, --detach | 后台运行容器，并输出容器 id |
 
 使用 `-d` 选项或者 `-d=true` 使得容器后台运行：
 
