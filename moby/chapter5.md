@@ -369,3 +369,143 @@ WORKDIR /path/to/workdir
 > Note: 如果设置的 `WORKDIR` 不存在，则会自动创建
 
 `Dockerfile` 还有一些高级技巧和黑魔法，比如可以通过 `STOPSIGNAL signal` 设置 system call 信号用以传送给容器退出。这里不做过多的介绍，更多参见 [Dockerfile reference](https://github.com/docker/docker-ce/blob/master/components/cli/docs/reference/builder.md)
+
+## 最佳实践
+
+### 使用 `.dockerignore` 文件
+
+使用`.dockerignore` 文件可以避免不必要的文件发送到 Docker daemon，以提升镜像构建效率，因此强烈建议使用 `.dockerignore` 文件。
+
+### 避免安装不必要的软件包
+
+为了降低复杂性、依赖性、文件大小以及构建时间，应该避免安装额外的或不必要的包。例如，不需要在一个数据库镜像中安装一个文本编辑器。
+
+### 每个容器应该只包括一个 `concern`
+
+将应用程序解耦为多个容器，可以让容器更便于横向扩展和复用。针对容器，你可能经常会听到 `一个容器一个进程` 的理念，这是一个好的经验法则，但并不是一条硬性规定，实际过程中保持容器尽可能干净和模块化即可。
+
+### 最小化镜像层数
+
+* Docker 1.10 或者更高版本开始，只有 `RUN`、`COPY` 和 `ADD` 指令会创建镜像层，其它指令创建临时中间镜像，不再直接增加构建的大小
+* Docker 17.05 或者更高版本还支持多阶段构建（[multi-stage builds](https://docs.docker.com/engine/userguide/eng-image/multistage-build/)）
+
+### 多行参数排序
+
+如果可能，通过字母顺序来排序，这样可以避免安装包的重复并且更容易更新列表，另外可读性也会更强，添加一个空行使用 `\` 换行:
+
+```
+RUN apt-get update && apt-get install -y \
+  bzr \
+  cvs \
+  git \
+  mercurial \
+  subversion
+```
+
+### 构建缓存
+
+在镜像构建过程中，Docker 会按照 `Dockerfile` 中的顺序执行指令，Docker 会检测缓存中是否有可以复用的镜像，而不是直接创建新的镜像。如果不想使用缓存，可以通过 `--no-cache=true` 取消缓存读取。
+
+* Docker 从缓存中的父镜像开始，将下一条指令和该基础镜像派生出的所有子镜像对比，查看是否使用了完全相同的构建指令，以确定缓存是否可复用。如果不相同，缓存失效。
+* 大多数情况，只需要将 `Dockerfile` 中的指令与子镜像进行比较就够了。针对 `COPY` 和 `ADD` 指令则有些不同，除了比较指令是否相同，还需要校验比较镜像中的文件内容（忽略修改时间和访问时间）。如果文件中有任何内容改变，则缓存失效。
+* `RUN apt-get -y update` 这类命令，则不会匹配缓存。
+
+> Note: 为了有效地利用缓存，你需要保持你的 Dockerfile 一致，并且尽量在末尾修改。
+
+### 指令最佳实践
+
+#### FROM
+
+如果有可能，尽量使用官方仓库的镜像作为基础镜像。（比如安全因素、干净性等）
+
+#### RUN
+
+保持 `Dockerfile` 可读性、可理解、可维护性，通过 `\` 分隔比较长或者复杂的 `RUN` 指令：
+
+```
+RUN apt-get update && apt-get install -y \
+    aufs-tools \
+    automake \
+    build-essential \
+    curl \
+    dpkg-sig \
+    libcap-dev \
+    libsqlite3-dev \
+    mercurial \
+    reprepro \
+    ruby1.9.1 \
+    ruby1.9.1-dev \
+    s3cmd=1.1.* \
+ && rm -rf /var/lib/apt/lists/*
+```
+
+> Note: `apt-get update` 要和 `apt-get install` 指令要同时使用，否则单独使用 `apt-get update` 会导致缓存问题（直接使用缓存而不执行该条命令）并且导致 `apt-get install 安装命令失败`。
+
+__使用管道__
+
+使用 `RUN` 运行命令的时候，可能一些命令依赖 shell 管道的的功能，如：
+
+```
+RUN wget -O - https://some.site | wc -l > /number
+```
+
+Docker 执行这些命令的时候使用的是 `/bin/sh -c`，最后执行的命令退出码决定整个命令是否执行成功。也就是说管道前的命令 `wget` 即使执行失败，只要 `wc -l` 能成功执行，就不会停止镜像构建。为了规避这个问题，可以加入 `set -o pipefail &&` 来保证镜像正常构建：
+
+```
+RUN set -o pipefail && wget -O - https://some.site | wc -l > /number
+```
+
+> Note: 不是所有的 shell 都支持 `-o pipefail` 选项的（比如 dash）。Debian 基础类的镜像默认 shell 是 dash，可以通过如下方式来支持 `pipefail`：
+>```
+>RUN ["/bin/bash", "-c", "set -o pipefail && wget -O - https://some.site | wc -l > /number"]
+>```
+
+#### CMD
+
+`CMD` 应该以 `CMD ["executable", "param1", "param2"…]` 这种格式运行。不建议结合 `ENTRYPOINT` 使用，这样反而会带来一定的复杂性。
+
+#### EXPOSE
+
+`EXPOSE` 指令用来表面容器将监听连接的端口，建议使用标准的端口，如 Nginx Web 服务则是 `EXPOSE 80`，而 MongoDB 服务则是 `EXPOSE 27017`。至于外部映射的端口，用户则可以根据实际自己定义。
+
+#### ENV
+
+通过指定一些环境变量，可以使得 `Dockerfile` 更方便维护，如：
+
+```
+ENV PG_MAJOR 9.3
+ENV PG_VERSION 9.3.4
+RUN curl -SL http://example.com/postgres-$PG_VERSION.tar.xz | tar -xJC /usr/src/postgress && …
+ENV PATH /usr/local/postgres-$PG_MAJOR/bin:$PATH
+```
+
+#### ADD or COPY
+
+尽管 `ADD` 和 `COPY` 功能上很类似，一般建议优先使用 `COPY`。`COPY` 相对 `ADD` 更透明，就是提供本地文件的拷贝。`ADD` 最好的应用场景就是，拷贝 tar 包，自动解压。其它场景建议一律使用 `COPY`，针对远程文件的拷贝，则使用 `RUN` 结合 `wget` 或者 `curl` 命令代替：
+
+```
+RUN mkdir -p /usr/src/things \
+    && curl -SL http://example.com/big.tar.xz \
+    | tar -xJC /usr/src/things \
+    && make -C /usr/src/things all
+```
+
+#### ENTRYPOINT
+
+`ENTRYPOINT` 最好的就是用其设置镜像的主运行命令，方便镜像运行的时候直接指定命令参数（或者结合 `CMD` 设置默认参数）。
+
+#### VOLUME
+
+`VOLUME` 指令用来定义数据存储路径，强烈建议有存储相关的路径通过 `VOLUME` 设置卷。
+
+#### USER
+
+应该尽量避免安装或者使用 sudo，因为它具有不可预知的 TTY 和信号转发行为，可能会导致很多问题。如果需要 sudo 类似的功能（例如，以 root 初始化守护进程，但是以非 root 身份运行守护进程），则可以使用 `gosu`。
+
+为了减少镜像层和降低复杂性，应该避免频繁的用户切换。
+
+#### WORKDIR
+
+为了清晰和可靠性，建议 `WORKDIR` 使用绝对路径。另外，建议通过 `WORKDIR` 来替换类似 `RUN cd … && do-something`  指定，以带来更好的可读性、故障定位等。
+
+获取更多关于 `Dockerfile` 的最佳实践，详细的请阅读 Docker 官方文档 [Best practices for writing Dockerfiles](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices) 。
