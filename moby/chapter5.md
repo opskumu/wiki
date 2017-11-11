@@ -370,7 +370,7 @@ WORKDIR /path/to/workdir
 
 `Dockerfile` 还有一些高级技巧和黑魔法，比如可以通过 `STOPSIGNAL signal` 设置 system call 信号用以传送给容器退出。这里不做过多的介绍，更多参见 [Dockerfile reference](https://github.com/docker/docker-ce/blob/master/components/cli/docs/reference/builder.md)
 
-## 最佳实践
+## Dockerfile 最佳实践
 
 ### 使用 `.dockerignore` 文件
 
