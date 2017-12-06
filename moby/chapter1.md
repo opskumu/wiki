@@ -24,8 +24,12 @@
 
 `Docker Registry` 用来存放 `Docker` 镜像，如果把 `Docker` 镜像比作集装箱的话，那么 `Docker Registry` 可比喻成装载集装箱的大货轮。`Docker Registry` 有公有和私有的概念，`Docker` 官方 `Registry` 为 [Docker Hub](https://hub.docker.com)，国内的如阿里云、网易蜂巢、时速云等也均有相关仓库。Docker 镜像仓库起到了一个集中存储和分发 `Docker` 镜像的作用。
 
+三者之间的关系可以参考以下这张图（摘自《DevOps Kubernetes》）：
+
+![](images/docker-container-image-repo.png)
+
 ## Docker 原理
 
 `TODO`：一些还没有完成的章节，先记录一下个人的想法，以防忘记，以下是草稿
 
-> 草稿：Docker 原理基本上可以从 `Cgroup`、`Namespace` 上来阐述。另外，Docker 本身的源码也基本没有阅读，所以原理篇这个章节可能要花费蛮长时间才能理清。
+> 草稿：Docker 原理基本上可以从 `Cgroup`、`Namespace` 上来阐述。

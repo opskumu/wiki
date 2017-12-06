@@ -14,7 +14,7 @@
 # Kubernetes
 
 * Kubernetes
-    * [架构](k8s/chapter1.md)
+    * [概述](k8s/chapter1.md)
     * [集群构建](k8s/chapter2.md)
         * [从头开始构建 Kubernetes 集群](k8s/chapter2-1.md)
         * [通过 Ansible 自动构建 Kubernetes 集群](k8s/chapter2-2.md)
