@@ -284,15 +284,15 @@ server-key.pem
 server.pem
 ```
 
-### etcd 集群
+## etcd 集群
 
-#### 安装 etcd
+### 安装 etcd
 
 ```
 yum install -y etcd         // 三个节点通过 yum 安装 etcd
 ```
 
-#### 修改 etcd 配置
+### 修改 etcd 配置
 
 修改各节点 `/etc/etcd/etcd.conf` 配置如下：
 
@@ -364,7 +364,7 @@ ETCD_PEER_CLIENT_CERT_AUTH="true"
 ETCD_PEER_TRUSTED_CA_FILE="/etc/etcd/certs/ca.pem"
 ```
 
-#### 启动 etcd
+### 启动 etcd
 
 ```
 systemctl enable etcd
@@ -385,7 +385,7 @@ b11bce7cadfd39e8: name=192.168.150.129 peerURLs=https://192.168.150.129:2380 cli
 e4f0cdb23f2f804e: name=192.168.150.131 peerURLs=https://192.168.150.131:2380 clientURLs=https://192.168.150.131:2379 isLeader=false
 ```
 
-### Kubernetes 集群
+## Kubernetes 集群
 
 ```
 yum install -y kubernetes --disablerepo=extras
