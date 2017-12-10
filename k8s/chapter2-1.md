@@ -1,10 +1,20 @@
 # 从头开始构建 Kubernetes 集群
 
+## 系统信息
+
 | 节点 | 地址 | 用途 |
 | :-- | :-- | :-- |
 | master | 192.168.150.129 | Kubernetes master & etcd node |
 | node1  | 192.168.150.130 | Kubernetes node & etcd node |
 | node2  | 192.168.150.131 | Kubernetes node & etcd node |
+
+
+```
+# cat /etc/centos-release
+CentOS Linux release 7.4.1708 (Core)
+# uname -r
+3.10.0-693.el7.x86_64
+```
 
 ## 添加 YUM 源
 
@@ -254,6 +264,12 @@ cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=clie
 
 #### 同步证书到节点
 
+修改证书权限：
+
+```
+chmod 600 -R ~/cfssl/*
+```
+
 * 192.168.150.129 `/etc/etcd/certs/`
 
 ```
@@ -374,19 +390,451 @@ systemctl start etcd
 客户端通过 `client` 证书验证集群状态
 
 ```
-# ETCDCTL_ENDPOINT=https://192.168.150.129:2379,https://192.168.150.130,https://192.168.150.131 etcdctl --cert-file=/root/cfssl/client.pem --key-file=/root/cfssl/client-key.pem  --ca-file=/etc/etcd/certs/ca.pem  cluster-health
+# ETCDCTL_ENDPOINT=https://192.168.150.129:2379,https://192.168.150.130:2379,https://192.168.150.131:2379 etcdctl --cert-file=/root/cfssl/client.pem --key-file=/root/cfssl/client-key.pem  --ca-file=/etc/etcd/certs/ca.pem  cluster-health
 member 304bc49cfdaa154f is healthy: got healthy result from https://192.168.150.130:2379
 member b11bce7cadfd39e8 is healthy: got healthy result from https://192.168.150.129:2379
 member e4f0cdb23f2f804e is healthy: got healthy result from https://192.168.150.131:2379
 cluster is healthy
-# ETCDCTL_ENDPOINT=https://192.168.150.129:2379,https://192.168.150.130,https://192.168.150.131 etcdctl --cert-file=/root/cfssl/client.pem --key-file=/root/cfssl/client-key.pem  --ca-file=/etc/etcd/certs/ca.pem  member list
+# ETCDCTL_ENDPOINT=https://192.168.150.129:2379,https://192.168.150.130:2379,https://192.168.150.131:2379 etcdctl --cert-file=/root/cfssl/client.pem --key-file=/root/cfssl/client-key.pem  --ca-file=/etc/etcd/certs/ca.pem  member list
 304bc49cfdaa154f: name=192.168.150.130 peerURLs=https://192.168.150.130:2380 clientURLs=https://192.168.150.130:2379 isLeader=false
 b11bce7cadfd39e8: name=192.168.150.129 peerURLs=https://192.168.150.129:2380 clientURLs=https://192.168.150.129:2379 isLeader=true
 e4f0cdb23f2f804e: name=192.168.150.131 peerURLs=https://192.168.150.131:2380 clientURLs=https://192.168.150.131:2379 isLeader=false
 ```
 
+## Docker & Flannel
+
+### Docker
+
+
+#### Docker 配置
+
+`/usr/lib/systemd/system/docker.service`
+
+```
+[Unit]
+Description=Docker Application Container Engine
+Documentation=http://docs.docker.com
+After=network.target docker-containerd.service
+Wants=docker-storage-setup.service
+Requires=docker-containerd.service rhel-push-plugin.socket
+
+[Service]
+Type=notify
+EnvironmentFile=-/etc/sysconfig/docker
+EnvironmentFile=-/etc/sysconfig/docker-storage
+EnvironmentFile=-/etc/sysconfig/docker-network
+Environment=GOTRACEBACK=crash
+ExecStart=/usr/bin/dockerd-current \
+          --add-runtime oci=/usr/libexec/docker/docker-runc-current \
+          --default-runtime=oci \
+          --authorization-plugin=rhel-push-plugin \
+          --containerd /run/containerd.sock \
+          --exec-opt native.cgroupdriver=systemd \
+          --userland-proxy-path=/usr/libexec/docker/docker-proxy-current \
+          --init-path=/usr/libexec/docker/docker-init-current \
+          --seccomp-profile=/etc/docker/seccomp.json \
+          $OPTIONS \
+          $DOCKER_STORAGE_OPTIONS \
+          $DOCKER_NETWORK_OPTIONS \
+          $ADD_REGISTRY \
+          $BLOCK_REGISTRY \
+          $INSECURE_REGISTRY \
+          $REGISTRIES
+ExecReload=/bin/kill -s HUP $MAINPID
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+TimeoutStartSec=0
+Restart=on-abnormal
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```
+systemctl daemon-reload
+```
+
+`/etc/sysconfig/docker`
+
+```
+# /etc/sysconfig/docker
+
+# Modify these options if you want to change the way the docker daemon runs
+OPTIONS=''
+if [ -z "${DOCKER_CERT_PATH}" ]; then
+    DOCKER_CERT_PATH=/etc/docker
+fi
+
+# Do not add registries in this file anymore. Use /etc/containers/registries.conf
+# from the atomic-registries package.
+#
+
+# On an SELinux system, if you remove the --selinux-enabled option, you
+# also need to turn on the docker_transition_unconfined boolean.
+# setsebool -P docker_transition_unconfined 1
+
+# Location used for temporary files, such as those created by
+# docker load and build operations. Default is /var/lib/docker/tmp
+# Can be overriden by setting the following environment variable.
+# DOCKER_TMPDIR=/var/tmp
+
+# Controls the /etc/cron.daily/docker-logrotate cron job status.
+# To disable, uncomment the line below.
+# LOGROTATE=false
+#
+
+# docker-latest daemon can be used by starting the docker-latest unitfile.
+# To use docker-latest client, uncomment below line
+#DOCKERBINARY=/usr/bin/docker-latest
+```
+
+`/etc/docker/daemon.json`
+
+```
+{
+    "storage-driver": "overlay2",
+    "log-opts": {
+        "max-size": "200m",
+        "max-file": "5"
+    },
+    "log-level": "warn",
+    "registry-mirrors": [
+        "https://registry.docker-cn.com",
+        "http://hub-mirror.c.163.com"
+    ]
+}
+```
+
+### Flannel
+
+```
+ETCDCTL_ENDPOINT=https://192.168.150.129:2379,https://192.168.150.130,https://192.168.150.131 etcdctl --cert-file=/root/cfssl/client.pem --key-file=/root/cfssl/client-key.pem  --ca-file=/etc/etcd/certs/ca.pem  mk /atomic.io/network/config '{"Network":"172.17.0.0/16", "SubnetLen": 25,"Backend": {"Type": "host-gw"}}'
+```
+
+`/etc/sysconfig/flanneld`
+
+```
+# Flanneld configuration options
+
+# etcd url location.  Point this to the server where etcd runs
+FLANNEL_ETCD_ENDPOINTS="https://192.168.150.129:2379,https://192.168.150.130:2379,https://192.168.150.131:2379"
+
+# etcd config key.  This is the configuration key that flannel queries
+# For address range assignment
+FLANNEL_ETCD_PREFIX="/atomic.io/network"
+
+# Any additional options that you want to pass
+FLANNEL_OPTIONS="-etcd-cafile=/srv/kubernetes/ca.pem -etcd-certfile=/srv/kubernetes/client.pem -etcd-keyfile=/srv/kubernetes/client-key.pem"
+```
+
+### 启动 Flannel & Docker
+
+```
+systemctl start flanneld
+systemctl enable flanneld
+systemctl start docker
+systemctl enable docker
+```
+
+```
+[root@node1 ~]# ifconfig docker0
+docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 10.244.16.129  netmask 255.255.255.128  broadcast 0.0.0.0
+        ether 02:42:f3:6a:61:10  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+```
+
+```
+[root@node2 ~]# ifconfig docker0
+docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 10.244.30.129  netmask 255.255.255.128  broadcast 0.0.0.0
+        ether 02:42:4d:06:a9:28  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+[root@node2 ~]#
+```
+
+测试连通：
+
+```
+[root@node2 ~]# route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         192.168.150.2   0.0.0.0         UG    100    0        0 ens33
+10.244.16.128   192.168.150.130 255.255.255.128 UG    0      0        0 ens33
+10.244.30.128   0.0.0.0         255.255.255.128 U     0      0        0 docker0
+192.168.150.0   0.0.0.0         255.255.255.0   U     100    0        0 ens33
+[root@node2 ~]# ping -c 1 10.244.16.129
+PING 10.244.16.129 (10.244.16.129) 56(84) bytes of data.
+64 bytes from 10.244.16.129: icmp_seq=1 ttl=64 time=0.425 ms
+
+--- 10.244.16.129 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.425/0.425/0.425/0.000 ms
+```
+
+
 ## Kubernetes 集群
+
+### Kubernetes Master
 
 ```
 yum install -y kubernetes --disablerepo=extras
 ```
+
+同步证书，此处为了方便直接使用上文中生成的证书文件，你也可以单独再生成一份专用于 `Kubernetes`：
+
+```
+# chown kube:kube -R /srv/kubernetes
+# ls -l /srv/kubernetes/*
+-rw------- 1 kube kube 1257 Dec 10 14:40 /srv/kubernetes/ca.pem
+-rw------- 1 kube kube 1675 Dec 10 14:44 /srv/kubernetes/client-key.pem
+-rw------- 1 kube kube 1306 Dec 10 14:44 /srv/kubernetes/client.pem
+-rw------- 1 kube kube 1679 Dec 10 14:41 /srv/kubernetes/server-key.pem
+-rw------- 1 kube kube 1334 Dec 10 14:41 /srv/kubernetes/server.pem
+```
+
+`/etc/kubernetes/config`
+
+```
+###
+# kubernetes system config
+#
+# The following values are used to configure various aspects of all
+# kubernetes services, including
+#
+#   kube-apiserver.service
+#   kube-controller-manager.service
+#   kube-scheduler.service
+#   kubelet.service
+#   kube-proxy.service
+# logging to stderr means we get it in the systemd journal
+KUBE_LOGTOSTDERR="--logtostderr=true"
+
+# journal message level, 0 is debug
+KUBE_LOG_LEVEL="--v=0"
+
+# Should this cluster be allowed to run privileged docker containers
+KUBE_ALLOW_PRIV="--allow-privileged=true"
+
+# How the controller-manager, scheduler, and proxy find the apiserver
+KUBE_MASTER="--master=http://127.0.0.1:8080"
+```
+
+`/etc/kubernetes/apiserver`
+
+```
+###
+# kubernetes system config
+#
+# The following values are used to configure the kube-apiserver
+#
+
+# The address on the local server to listen to.
+KUBE_API_ADDRESS="--insecure-bind-address=127.0.0.1"
+
+# The port on the local server to listen on.
+# KUBE_API_PORT="--port=8080"
+
+# Port minions listen on
+# KUBELET_PORT="--kubelet-port=10250"
+
+# Comma separated list of nodes in the etcd cluster
+KUBE_ETCD_SERVERS="--etcd-servers=https://192.168.150.129:2379,https://192.168.150.130:2379,https://192.168.150.131:2379"
+
+# Address range to use for services
+KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=10.254.0.0/16"
+
+# default admission control policies
+KUBE_ADMISSION_CONTROL="--admission-control=NamespaceLifecycle,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota"
+
+# Add your own!
+KUBE_API_ARGS="--max-requests-inflight=2000 --client-ca-file=/srv/kubernetes/ca.pem --tls-cert-file=/srv/kubernetes/server.pem --tls-private-key-file=/srv/kubernetes/server-key.pem --etcd-cafile=/srv/kubernetes/ca.pem --etcd-certfile=/srv/kubernetes/client.pem --etcd-keyfile=/srv/kubernetes/client-key.pem"
+```
+
+`/etc/kubernetes/controller-manager`
+
+```
+###
+# The following values are used to configure the kubernetes controller-manager
+
+# defaults from config and apiserver should be adequate
+
+# Add your own!
+KUBE_CONTROLLER_MANAGER_ARGS="--root-ca-file=/srv/kubernetes/ca.pem --service-account-private-key-file=/srv/kubernetes/server-key.pem --pod-eviction-timeout=120s"
+```
+
+`/etc/kubernetes/scheduler`
+
+```
+###
+# kubernetes scheduler config
+
+# default config should be adequate
+
+# Add your own!
+KUBE_SCHEDULER_ARGS=""
+```
+
+```
+systemctl start kube-apiserver
+systemctl start kube-controller-manager
+systemctl start kube-scheduler
+systemctl enable kube-apiserver
+systemctl enable kube-controller-manager
+systemctl enable kube-scheduler
+```
+
+```
+# kubectl cluster-info
+Kubernetes master is running at http://localhost:8080
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+```
+
+### Kubernetes Nodes
+
+```
+yum install -y kubernetes --disablerepo=extras
+```
+
+### kubelet & kube-proxy
+
+```
+ls -l /srv/kubernetes/c*
+-rw------- 1 root root 1257 Dec 10 14:40 /srv/kubernetes/ca.pem
+-rw------- 1 root root 1675 Dec 10 14:44 /srv/kubernetes/client-key.pem
+-rw------- 1 root root 1306 Dec 10 14:44 /srv/kubernetes/client.pem
+```
+
+`/var/lib/kubelet/.kubeconfig`
+
+```
+apiVersion: v1
+kind: Config
+clusters:
+- cluster:
+    certificate-authority: /srv/kubernetes/ca.pem
+    server: https://192.168.150.129:6443
+  name: k8s
+users:
+- name: kubelet
+  user:
+    client-certificate: /srv/kubernetes/client.pem
+    client-key: /srv/kubernetes/client-key.pem
+contexts:
+- context:
+    cluster: k8s
+    user: kubelet
+```
+
+
+`/etc/kubernetes/config`
+
+```
+###
+# kubernetes system config
+#
+# The following values are used to configure various aspects of all
+# kubernetes services, including
+#
+#   kube-apiserver.service
+#   kube-controller-manager.service
+#   kube-scheduler.service
+#   kubelet.service
+#   kube-proxy.service
+# logging to stderr means we get it in the systemd journal
+KUBE_LOGTOSTDERR="--logtostderr=true"
+
+# journal message level, 0 is debug
+KUBE_LOG_LEVEL="--v=0"
+
+# Should this cluster be allowed to run privileged docker containers
+KUBE_ALLOW_PRIV="--allow-privileged=true"
+
+# How the controller-manager, scheduler, and proxy find the apiserver
+KUBE_MASTER="--master=https://192.168.150.129:6443"
+```
+
+`/etc/kubernetes/kubelet`
+
+```
+###
+# kubernetes kubelet (minion) config
+
+# The address for the info server to serve on (set to 0.0.0.0 or "" for all interfaces)
+KUBELET_ADDRESS="--address=0.0.0.0"
+
+# The port for the info server to serve on
+# KUBELET_PORT="--port=10250"
+
+# location of the kubeconfig
+KUBELET_API_SERVER="--kubeconfig=/var/lib/kubelet/.kubeconfig"
+
+# You may leave this blank to use the actual hostname
+KUBELET_HOSTNAME="--hostname-override=192.168.150.130"
+
+# Add your own!
+KUBELET_ARGS="--cgroup-driver=systemd --fail-swap-on=false --image-gc-high-threshold=95 --image-gc-low-threshold=80 --serialize-image-pulls=false --max-pods=30 --container-runtime=docker --cloud-provider=''"
+```
+
+> `--pod-infra-container-image=<此处修改为私有 repo 地址>/pause-amd64:3.0`
+
+`/etc/kubernetes/proxy`
+
+```
+###
+# kubernetes proxy config
+
+# default config should be adequate
+
+# Add your own!
+KUBE_PROXY_ARGS="--kubeconfig=/var/lib/kubelet/.kubeconfig"
+```
+
+### 启动节点服务
+
+```
+systemctl start kubelet
+systemctl enable kubelet
+systemctl start kube-proxy
+systemctl enable kube-proxy
+```
+
+Master 上查询当前节点，显示两个节点均已注册：
+
+```
+[root@master ~]# kubectl get nodes
+NAME              STATUS    ROLES     AGE       VERSION
+192.168.150.130   Ready     <none>    1h        v1.8.1
+192.168.150.131   Ready     <none>    1h        v1.8.1
+```
+
+```
+[root@master ~]# cat test-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+spec:
+  containers:
+    - name: busybox
+      image: busybox:latest
+      args: [sh, -c, 'sleep 9999999999']
+[root@master ~]# kubectl create -f test-pod.yaml
+[root@master ~]# kubectl get pods -o wide
+NAME      READY     STATUS    RESTARTS   AGE       IP              NODE
+busybox   1/1       Running   0          1m        10.244.30.130   192.168.150.131
+```
+
+### KubeDNS
+
+
+### KubeDashboard
