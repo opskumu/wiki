@@ -595,8 +595,6 @@ yum install -y kubernetes --disablerepo=extras
 # chown kube:kube -R /srv/kubernetes
 # ls -l /srv/kubernetes/*
 -rw------- 1 kube kube 1257 Dec 10 14:40 /srv/kubernetes/ca.pem
--rw------- 1 kube kube 1675 Dec 10 14:44 /srv/kubernetes/client-key.pem
--rw------- 1 kube kube 1306 Dec 10 14:44 /srv/kubernetes/client.pem
 -rw------- 1 kube kube 1679 Dec 10 14:41 /srv/kubernetes/server-key.pem
 -rw------- 1 kube kube 1334 Dec 10 14:41 /srv/kubernetes/server.pem
 ```
@@ -705,14 +703,15 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 yum install -y kubernetes --disablerepo=extras
 ```
 
-### kubelet & kube-proxy
+同步证书：
 
 ```
-ls -l /srv/kubernetes/c*
+# ls -l /srv/kubernetes/*
 -rw------- 1 root root 1257 Dec 10 14:40 /srv/kubernetes/ca.pem
--rw------- 1 root root 1675 Dec 10 14:44 /srv/kubernetes/client-key.pem
--rw------- 1 root root 1306 Dec 10 14:44 /srv/kubernetes/client.pem
+-rw------- 1 root root 1679 Dec 10 14:41 /srv/kubernetes/client-key.pem
+-rw------- 1 root root 1334 Dec 10 14:41 /srv/kubernetes/client.pem
 ```
+
 
 `/var/lib/kubelet/.kubeconfig`
 
