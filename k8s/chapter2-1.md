@@ -921,7 +921,7 @@ NAME      READY     STATUS    RESTARTS   AGE       IP            NODE
 busybox   1/1       Running   1          4m        172.17.33.2   192.168.150.131
 ```
 
-### KubeDNS
+## KubeDNS
 
 修改官方 kubedns yaml 文件 [kube-dns.yaml.base](https://github.com/kubernetes/kubernetes/blob/master/cluster/addons/dns/kube-dns.yaml.base)，替换 `__PILLAR__DNS__SERVER__` 和 `__PILLAR__DNS__DOMAIN__` 为实际配置，本例中分别替换为 `10.254.0.10` 和 `k8s.opskumu.com`。
 
@@ -937,7 +937,7 @@ NAME       TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)         AGE
 kube-dns   ClusterIP   10.254.0.10   <none>        53/UDP,53/TCP   12m
 ```
 
-#### 修改 kubelet 配置
+### 更新 kubelet 配置
 
 追加 `--cluster-dns=10.254.0.10` 和  `--cluster-domain=k8s.opskumu.com` 选项到 `/etc/kubernetes/kubelet` 中的 `KUBELET_ARGS` 配置上，并重启 kubelet：
 
@@ -965,7 +965,7 @@ KUBELET_ARGS="--cgroup-driver=systemd --fail-swap-on=false --image-gc-high-thres
 systemctl restart kubelet
 ```
 
-#### 验证 DNS
+### 验证 DNS
 
 选择任何一个节点验证即可，显示解析成功：
 
@@ -990,7 +990,7 @@ kubernetes.default.svc.k8s.opskumu.com. 30 IN A 10.254.0.1
 ;; MSG SIZE  rcvd: 72
 ```
 
-### Kube Dashboard
+## Kube Dashboard
 
 ```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
