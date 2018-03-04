@@ -1,6 +1,6 @@
 # Docker 配置
 
-以下配置说明，统一以 `CentOS7.3` 为系统环境，其它系统版本可能会有所不同。
+以下配置说明，统一以 `CentOS 7.3` 为系统环境，其它系统版本可能会有所不同。
 
 ## 相关配置文件
 
@@ -90,7 +90,7 @@ Docker daemon 当前支持以下几种镜像层存储驱动：
 * overlay
 * overlay2
 
-以上关于不同类型的存储驱动，后续会具体介绍，这一章节只介绍基本的存储驱动配置项，针对 CentOS7 系统则选择使用 devicemapper、overlay、overlay2 居多。当前笔者通过 [Docker 安装](chapter2-1.md#centos7-docker-安装) 的默认存储驱动为 overlay2：
+以上关于不同类型的存储驱动，后续会具体介绍，这一章节只介绍基本的存储驱动配置项，针对 CentOS 7 系统则选择使用 devicemapper、overlay、overlay2 居多。当前笔者通过 [Docker 安装](chapter2-1.md#centos7-docker-安装) 的默认存储驱动为 overlay2：
 
 ```
 # docker info

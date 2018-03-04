@@ -74,6 +74,14 @@ RUN apt-get update && \
 # docker build -t ubuntu-stress:latest .
 ```
 
+stress 工具常用命令：
+
+```
+stress --vm 1 --vm-bytes 1000M  # 占用 1000MB 内存
+stress -c 1                     # 占用 1core CPU
+stress --cpu 8 --io 4 --vm 2 --vm-bytes 128M --timeout 10s
+```
+
 #### 内存限制
 
 | 选项 | 说明 |
@@ -99,7 +107,7 @@ RUN apt-get update && \
 # docker run -it -m 300M ubuntu
 ```
 
-如果只设置 `--memory` 限制，默认情况下，总虚拟内存大小(--memory-swap) 会设置成内存的两倍，即内存和 swap 之和 2*300M。意味着这个容器可以使用 300M 的内存以及 300M 的 swap。
+如果只设置 `--memory` 限制，默认情况下，总虚拟内存大小 (`--memory-swap`) 会设置成内存的两倍，即内存和 swap 之和 2*300M。意味着这个容器可以使用 300M 的内存以及 300M 的 swap。
 
 ```
 # docker run -it -m 300M --memory-swap 1G ubuntu
