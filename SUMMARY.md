@@ -14,5 +14,7 @@
 * [集群构建](k8s/chapter2.md)
     * [从头开始构建 Kubernetes 集群](k8s/chapter2-1.md)
     * [通过 Ansible 自动构建 Kubernetes 集群](k8s/chapter2-2.md)
-* [配置](k8s/chapter3.md)
+* 组件配置
     * [kubelet](k8s/chapter3-5.md)
+* 源码解析
+    * [kubelet](k8s/chapter5-1.md)
