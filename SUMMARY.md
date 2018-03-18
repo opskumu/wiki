@@ -15,7 +15,7 @@
 
 * Kubernetes 手册
     * [概述](k8s/chapter1.md)
-    * [资源](k8s/chapter2.md)
+    * [术语](k8s/chapter2.md)
     * [集群构建](k8s/chapter3.md)
         * [从头开始构建 Kubernetes 集群](k8s/chapter3-1.md)
         * [通过 Ansible 自动构建 Kubernetes 集群](k8s/chapter3-2.md)
