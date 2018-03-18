@@ -1,8 +1,37 @@
-## 集群构建
+# Kubernetes 资源
 
-集群构建的方式有很多，官方提供`kubeadm` 可以很方便的构建，相关文档可以直接看官方提供的 [Using kubeadm to Create a Cluster](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/)。现在该工具还处于 alpha 版本，所以生产环境不建议使用这种方式创建，但对于新手使用该工具快速构建一个 Kubernetes 集群还是非常便利的。本章节会介绍以下两种集群构建方式：
+## namespaces
 
-* [从头开始构建一个 Kubernetes 集群](chapter2-1.md)
-* [通过 Ansible 自动构建 Kubernetes 集群](chapter2-2.md)
+同一个 Kubernetes 物理集群支持多个虚拟集群，而这个虚拟集群的概念就是 namespaces。这是官方的介绍，官方的介绍多少有点让人不那么容易理解。简单来说，namespaces 可以认为是一个环境或者项目组的概念，namespaces 下创建操作相应的服务。每个 namespaces 都是逻辑隔离的，针对指定 namespaces 可以做相应的资源（CPU、Memory 等）限制以及用户权限控制（RBAC）。namespaces 名字是全局唯一的。
 
-另外，如果有本地运行 Kubernetes 的需求，可以直接使用 [Minikube](https://github.com/kubernetes/minikube) 达到快速构建的目的，具体可以参考官方介绍。
+> __注：__ 针对同一软件的不同版本，官方是不建议启用多个 namespaces 的，而是推荐在同一个 namespaces 下使用 `labels` 去区分标识。不过，这还是得看情况，针对多环境不同版本测试来说，还是采用多个 namespaces 比较好，方便隔离。
+
+Kubernetes 集群创建之后会看到三个初始化 namespaces：
+
+- `default` 默认 namespace
+- `kube-system` Kubernetes 系统 namespace
+- `kube-public` 用于集群中所有用户都可读的 namespace，是个惯例做法，但是非必须的
+
+## pod
+
+pod 是 Kubernetes 中创建和管理的最小可部署计算单元，一个 pod 是由一个或者多个容器组成（如 Docker 容器），pod 中的容器共享存储/网络。
+
+## ReplicaSet (RS) and ReplicationController (RC)
+
+单个部署 pod，如果 pod 因为一些因素异常退出了，pod 本身是不会自动恢复的。RS 和 RC 则担任管理 pod 状态的角色，RS 和 RC 的机制保证通过它们管理的 pod 保持固定的副本数并持续运行。如果 pod 因异常原退出了，那么 RS 和 RC 会请求创建新的 pod。
+
+## deployments
+
+## replicasets
+
+## jobs
+
+## service
+
+## endpoints
+
+## ingresses
+
+## secret
+
+## configmap
