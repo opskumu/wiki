@@ -274,6 +274,8 @@ chmod 600 -R ~/cfssl/*.pem
 
 ## etcd 集群
 
+etcd 官方提供非常好的安装部署 workflow，可以参见 [Install and deploy etcd](http://play.etcd.io/install)
+
 ### 安装
 
 ```
