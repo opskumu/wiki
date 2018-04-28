@@ -116,8 +116,8 @@ CA 配置文件为 `ca-config.json`，修改如下：
     "names": [
         {
             "C": "CN",
-            "L": "ZheJiang",
-            "ST": "HangZhou"
+            "L": "Zhejiang",
+            "ST": "Hangzhou"
         }
     ]
 }
@@ -164,8 +164,8 @@ cfssl print-defaults csr > server.json
     "names": [
         {
             "C": "CN",
-            "L": "ZheJiang",
-            "ST": "HangZhou"
+            "L": "Zhejiang",
+            "ST": "Hangzhou"
         }
     ]
 }
@@ -209,8 +209,8 @@ cfssl print-defaults csr > member1.json
     "names": [
         {
             "C": "CN",
-            "L": "ZheJiang",
-            "ST": "HangZhou"
+            "L": "Zhejiang",
+            "ST": "Hangzhou"
         }
     ]
 }
@@ -253,8 +253,8 @@ cfssl print-defaults csr > client.json
     "names": [
         {
             "C": "CN",
-            "L": "ZheJiang",
-            "ST": "HangZhou"
+            "L": "Zhejiang",
+            "ST": "Hangzhou"
         }
     ]
 }
@@ -652,8 +652,8 @@ cfssl print-defaults csr > api-server.json
     "names": [
         {
             "C": "CN",
-            "L": "ZheJiang",
-            "ST": "HangZhou"
+            "L": "Zhejiang",
+            "ST": "Hangzhou"
         }
     ]
 }
