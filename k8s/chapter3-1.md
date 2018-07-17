@@ -620,7 +620,7 @@ PING 172.17.37.1 (172.17.37.1) 56(84) bytes of data.
 rtt min/avg/max/mdev = 1.846/1.846/1.846/0.000 ms
 ```
 
-> Notes: 当前 yum 安装的 flannel 版本为 flannel-0.7.1-2.el7.x86_64，结合 yum 安装版本的 K8s 1.8.1 出现了问题，节点之间可以互相 ping 通，但是针对 pod 只能和当前节点的 pod 通信，跨节点不可以，最后升级 flannel 到官方 0.9.1 版本解决。
+> __Note：__ 当前 yum 安装的 flannel 版本为 flannel-0.7.1-2.el7.x86_64，结合 yum 安装版本的 K8s 1.8.1 出现了问题，节点之间可以互相 ping 通，但是针对 pod 只能和当前节点的 pod 通信，跨节点不可以，最后升级 flannel 到官方 0.9.1 版本解决。
 
 ## Kubernetes Master
 
@@ -925,7 +925,7 @@ busybox   1/1       Running   1          4m        172.17.33.2   192.168.150.131
 
 ## KubeDNS
 
-修改官方 kubedns yaml 文件 [kube-dns.yaml.base](https://github.com/kubernetes/kubernetes/blob/master/cluster/addons/dns/kube-dns.yaml.base)，替换 `__PILLAR__DNS__SERVER__` 和 `__PILLAR__DNS__DOMAIN__` 为实际配置，本例中分别替换为 `10.254.0.10` 和 `k8s.opskumu.com`。
+修改官方 kubedns yaml 文件 [kube-dns.yaml.base](https://github.com/kubernetes/kubernetes/blob/master/cluster/addons/dns/kube-dns.yaml.base)，替换 `__PILLAR__DNS__SERVER__` 和 `__PILLAR__DNS__DOMAIN__` 为实际配置，本例中分别替换为 `10.254.0.10` 和 `cluster.local`。
 
 > Notes：同之前的镜像一样，kubedns 默认的镜像源都是 `gcr.io`，因为被墙的原因，建议通过某些不可描述的手段下载之后上传到自己的内部私有镜像仓库中。
 
@@ -941,7 +941,7 @@ kube-dns   ClusterIP   10.254.0.10   <none>        53/UDP,53/TCP   12m
 
 ### 更新 kubelet 配置
 
-追加 `--cluster-dns=10.254.0.10` 和  `--cluster-domain=k8s.opskumu.com` 选项到 `/etc/kubernetes/kubelet` 中的 `KUBELET_ARGS` 配置上，并重启 kubelet：
+追加 `--cluster-dns=10.254.0.10` 和  `--cluster-domain=cluster.local` 选项到 `/etc/kubernetes/kubelet` 中的 `KUBELET_ARGS` 配置上，并重启 kubelet：
 
 ```
 ###
@@ -960,7 +960,7 @@ KUBELET_API_SERVER="--kubeconfig=/var/lib/kubelet/.kubeconfig"
 KUBELET_HOSTNAME="--hostname-override=192.168.150.131"
 
 # Add your own!
-KUBELET_ARGS="--cgroup-driver=systemd --fail-swap-on=false --image-gc-high-threshold=95 --image-gc-low-threshold=80 --serialize-image-pulls=false --max-pods=30 --container-runtime=docker --cloud-provider='' --pod-infra-container-image=dockerhub.test.wacai.info/google_containers/pause-amd64:3.0 --cluster-dns=10.254.0.10 --cluster-domain=k8s.opskumu.com"
+KUBELET_ARGS="--cgroup-driver=systemd --fail-swap-on=false --image-gc-high-threshold=95 --image-gc-low-threshold=80 --serialize-image-pulls=false --max-pods=30 --container-runtime=docker --cloud-provider='' --pod-infra-container-image=dockerhub.test.wacai.info/google_containers/pause-amd64:3.0 --cluster-dns=10.254.0.10 --cluster-domain=cluster.local"
 ```
 
 ```
@@ -972,19 +972,19 @@ systemctl restart kubelet
 选择任何一个节点验证即可，显示解析成功：
 
 ```
-[root@node2 ~]# dig kubernetes.default.svc.k8s.opskumu.com @10.254.0.10
+[root@node2 ~]# dig kubernetes.default.svc.cluster.local @10.254.0.10
 
-; <<>> DiG 9.9.4-RedHat-9.9.4-51.el7_4.1 <<>> kubernetes.default.svc.k8s.opskumu.com @10.254.0.10
+; <<>> DiG 9.9.4-RedHat-9.9.4-51.el7_4.1 <<>> kubernetes.default.svc.cluster.local @10.254.0.10
 ;; global options: +cmd
 ;; Got answer:
 ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 42754
 ;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
 
 ;; QUESTION SECTION:
-;kubernetes.default.svc.k8s.opskumu.com.        IN A
+;kubernetes.default.svc.cluster.local.        IN A
 
 ;; ANSWER SECTION:
-kubernetes.default.svc.k8s.opskumu.com. 30 IN A 10.254.0.1
+kubernetes.default.svc.cluster.local. 30 IN A 10.254.0.1
 
 ;; Query time: 1 msec
 ;; SERVER: 10.254.0.10#53(10.254.0.10)
@@ -1007,7 +1007,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/s
 Starting to serve on 192.168.150.129:8001
 ```
 
-> Notes: 注意添加 `--accept-hosts='^*$'` 选项，否则会显示页面 `<h3>Unauthorized</h3>` 。
+> __Note：__ 注意添加 `--accept-hosts='^*$'` 选项，否则会显示页面 `<h3>Unauthorized</h3>` 。
 
 浏览器访问如下地址：
 

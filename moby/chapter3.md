@@ -35,7 +35,7 @@ fi
 
 Docker daemon 可以三种不同类型的 Socket 监听 Docker API 请求：unix，tcp，fd。默认情况下，会创建一个名为 `/var/run/docker.sock` 的 unix Socket 文件，该文件的访问权限需要是 root 权限或者属于 docker 组。如果有远程访问需求，那么则需要开启 tcp Socket。正常开启 tcp Socket，是没有任何加密和安全认证的，可以通过 HTTPS 等方式加密 tcp Socket，默认不建议开启 tcp Socket。
 
-> Note: If you’re using an HTTPS encrypted socket, keep in mind that only TLS1.0 and greater are supported. Protocols SSLv3 and under are not supported anymore for security reasons.
+> __Note：__ If you’re using an HTTPS encrypted socket, keep in mind that only TLS1.0 and greater are supported. Protocols SSLv3 and under are not supported anymore for security reasons.
 
 ```
 # ls -l /var/run/docker.sock
@@ -130,7 +130,7 @@ Storage Driver: devicemapper
 ... ...
 ```
 
-> Note: 考虑到 `daemon.json` 是跨平台的，并且为了和系统初始化脚本配置冲突的问题，所以 Docker 官方推荐使用 `daemon.json` 方式代替 `--storage-driver` 选项方式。
+> __Note：__ 考虑到 `daemon.json` 是跨平台的，并且为了和系统初始化脚本配置冲突的问题，所以 Docker 官方推荐使用 `daemon.json` 方式代替 `--storage-driver` 选项方式。
 
 移除 `--storage-driver` 选项，并且在 `/etc/docker/daemon.json` 文件中添加配置，如果文件不存在则创建即可。
 
@@ -142,7 +142,7 @@ Storage Driver: devicemapper
 # systemctl restart docker
 ```
 
-> Note: 以上指定存储驱动为 devicemapper，如果不添加其它选项，那么此时属于 `loop-lvm` 模式，这种模式下因为回环设备的原因，性能比较差，只适用于测试环境下使用。针对生产环境，则建议使用 `direct-lvm` 模式，后文会专门针对存储驱动做详细介绍。
+> __Note：__ 以上指定存储驱动为 devicemapper，如果不添加其它选项，那么此时属于 `loop-lvm` 模式，这种模式下因为回环设备的原因，性能比较差，只适用于测试环境下使用。针对生产环境，则建议使用 `direct-lvm` 模式，后文会专门针对存储驱动做详细介绍。
 
 ### Docker runtime execution 选项
 
@@ -168,7 +168,7 @@ ExecStart=/usr/bin/dockerd-current \
 Cgroup Driver: cgroupfs
 ```
 
-> Note: 如无特色需求，Cgroup Driver 保持默认即可。
+> __Note：__ 如无特别需求，Cgroup Driver 保持默认即可。
 
 ### Daemon DNS 选项
 
@@ -181,15 +181,15 @@ Cgroup Driver: cgroupfs
 
 #### insecure registries
 
-Docker 认为一个私有仓库要么安全的，要么就是不安全的。以私有仓库 myregistry:5000 为例，一个安全的镜像仓库需要使用 TLS，并且需要拷贝 CA 证书到每台 Docker 主机 `/etc/docker/certs.d/myregistry:5000/ca.crt` 上。
+Docker 认为一个私有仓库要么安全的，要么就是不安全的。以私有仓库 `myregistry:5000` 为例，一个安全的镜像仓库需要使用 TLS，并且需要拷贝 CA 证书到每台 Docker 主机 `/etc/docker/certs.d/myregistry:5000/ca.crt` 上。
 
-通过选项 `--insecure-registry` 可以标识指定私有仓库为不安全的。 如 `--insecure-registry myregistry:5000` 标识为 myregistry:5000 私有仓库为不安全的，而 `--insecure-registry 10.1.0.0/16` 则告诉 Docker daemon 所有域名被解析到这个网段中底子的镜像仓库都被标识为不安全的。一个不安全的镜像只有被标识为不安全的时候，才可以正常的进行 docker pull、push、search 等操作。
+通过选项 `--insecure-registry` 可以标识指定私有仓库为不安全的。 如 `--insecure-registry myregistry:5000` 标识为 `myregistry:5000` 私有仓库为不安全的，而 `--insecure-registry 10.1.0.0/16` 则告诉 Docker daemon 所有域名被解析到这个网段中的镜像仓库都被标识为不安全的。一个不安全的镜像只有被标识为不安全的时候，才可以正常的进行 docker pull、push、search 等操作。
 
 #### lagacy registries
 
 默认情况下，Registry V1 协议是被禁用的，Docker daemon 不会在执行 push、pull 以及 login 操作的时候去尝试通过 V1 协议去连接。可以通过 `--disable-legacy-registry=false` 启用该选项。需要注意的是，在 Docker 17.12 版本中该选项将会被移除，不再支持 Registry V1。
 
-> Note: Interaction v1 registries will no longer be supported in Docker v17.12, and the disable-legacy-registry configuration option will be removed.
+> __Note：__ Interaction v1 registries will no longer be supported in Docker v17.12, and the disable-legacy-registry configuration option will be removed.
 
 ### Default ulimit settings
 

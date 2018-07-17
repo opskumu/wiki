@@ -135,6 +135,8 @@ swappiness 可以认为是宿主 `/proc/sys/vm/swappiness` 设定：
 
 `--memory-swappiness=0` 表示禁用容器 swap 功能。这点不同于宿主机，宿主机 swappiness 即使设置为 0 也不保证 swap 不会被使用。默认情况下，该值继承父进程设置。
 
+> __Notes：__ 当然，在宿主机本身内存不足这种特殊情况下，容器依然会使用 swap 的。
+
 ```
 # docker run -it --memory-swappiness=0 ubuntu
 ```
@@ -221,7 +223,7 @@ OOM 相关命令选项一般不建议使用，特别针对以下这种没有对�
 
 默认，所有的容器对于 IO 操作「block IO bandwidth -- blkio」都拥有相同比例，该比例为 500。可以通过 `--blkio-weight` 修改容器 blkio 权重。`--blkio-weight` 权重值在 10 ~ 1000 之间。值越大，优先级越高。
 
-> Note: The blkio weight setting is only available for direct IO. Buffered IO is not currently supported. 其实不仅仅是 blkio 权重，其它的限制也只能针对直写 IO 有效。
+> __Note：__ The blkio weight setting is only available for direct IO. Buffered IO is not currently supported. 其实不仅仅是 blkio 权重，其它的限制也只能针对直写 IO 有效。
 
 ```
 # docker run -it --name c1 --blkio-weight 300 ubuntu
@@ -283,7 +285,7 @@ root@7df60a2ff701:/# dd if=test.out of=/dev/null bs=1M
 10485760 bytes (10 MB, 10 MiB) copied, 10.0227 s, 1.0 MB/s
 ```
 
-> Note: 测试读性能的时候必须添加 `--privileged` 选项启用超级权限，否则无法操作 `/proc/sys/vm/drop_caches` 文件清空缓存。
+> __Note：__ 测试读性能的时候必须添加 `--privileged` 选项启用超级权限，否则无法操作 `/proc/sys/vm/drop_caches` 文件清空缓存。
 
 * `--device-read-iops`、`--device-write-iops`
 
@@ -412,7 +414,7 @@ today=Wednesday
 HOME=/root
 ```
 
-* HEALTHCHECK
+* HEALTHCHECK （设置健康检测）
 
 ```
 --health-cmd string                     Command to run to check health
@@ -430,7 +432,7 @@ HOME=/root
             'mount -t tmpfs -o' command.
 ```
 
-* VOLUME
+* VOLUME （存储卷操作）
 
 ```
 -v, --volume=[host-src:]container-dest[:<options>]: Bind mount a volume.
@@ -449,7 +451,7 @@ for bind-mounted volumes.
 --volumes-from="": Mount all volumes from the given container(s)
 ```
 
-* USER
+* USER （指定运行用户）
 
 ```
 -u="", --user="": Sets the username or UID used and optionally the groupname or GID for the specified command.
@@ -458,7 +460,7 @@ The followings examples are all valid:
 --user=[ user | user:group | uid | uid:gid | user:gid | uid:group ]
 ```
 
-* WORKDIR
+* WORKDIR （指定工作目录）
 
 ```
 -w="": Working directory inside the container

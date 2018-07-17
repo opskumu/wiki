@@ -30,7 +30,7 @@ Docker 镜像是 Docker 容器运行时的只读模板，每一个镜像由一�
 
 ### 拓展
 
--   [Visualizing Docker Containers and Images
+- [Visualizing Docker Containers and Images
     ](http://merrigrove.blogspot.com/2015/10/visualizing-docker-containers-and-images.html)
 
 ## Docker 原理
@@ -39,7 +39,7 @@ Docker 镜像是 Docker 容器运行时的只读模板，每一个镜像由一�
 
 如果需要深入理解相关知识，可以通过以下文章进一步学习：
 
--   [Docker 核心技术与实现原理](https://draveness.me/docker)
--   [Docker基础技术：Linux CGroup](https://coolshell.cn/articles/17049.html)
--   [Docker基础技术：Linux Namespace（上）](https://coolshell.cn/articles/17010.html)
--   [Docker基础技术：Linux Namespace（下）](https://coolshell.cn/articles/17029.html)
+- [Docker 核心技术与实现原理](https://draveness.me/docker)
+- [Docker基础技术：Linux CGroup](https://coolshell.cn/articles/17049.html)
+- [Docker基础技术：Linux Namespace（上）](https://coolshell.cn/articles/17010.html)
+- [Docker基础技术：Linux Namespace（下）](https://coolshell.cn/articles/17029.html)
