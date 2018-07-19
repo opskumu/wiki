@@ -131,11 +131,13 @@ CONTAINER           CPU %               MEM USAGE / LIMIT   MEM %               
 
 swappiness 可以认为是宿主 `/proc/sys/vm/swappiness` 设定：
 
+> **[info] 标注**  
 > Swappiness is a Linux kernel parameter that controls the relative weight given to swapping out runtime memory, as opposed to dropping pages from the system page cache. Swappiness can be set to values between 0 and 100 inclusive. A low value causes the kernel to avoid swapping, a higher value causes the kernel to try to use swap space. [Swappiness](https://en.wikipedia.org/wiki/Swappiness)
 
 `--memory-swappiness=0` 表示禁用容器 swap 功能。这点不同于宿主机，宿主机 swappiness 即使设置为 0 也不保证 swap 不会被使用。默认情况下，该值继承父进程设置。
 
-> __Notes：__ 当然，在宿主机本身内存不足这种特殊情况下，容器依然会使用 swap 的。
+> **[info] 标注**  
+> 当然，在宿主机本身内存不足这种特殊情况下，容器依然会使用 swap 的。
 
 ```
 # docker run -it --memory-swappiness=0 ubuntu
@@ -223,7 +225,8 @@ OOM 相关命令选项一般不建议使用，特别针对以下这种没有对�
 
 默认，所有的容器对于 IO 操作「block IO bandwidth -- blkio」都拥有相同比例，该比例为 500。可以通过 `--blkio-weight` 修改容器 blkio 权重。`--blkio-weight` 权重值在 10 ~ 1000 之间。值越大，优先级越高。
 
-> __Note：__ The blkio weight setting is only available for direct IO. Buffered IO is not currently supported. 其实不仅仅是 blkio 权重，其它的限制也只能针对直写 IO 有效。
+> **[info] 标注**  
+> The blkio weight setting is only available for direct IO. Buffered IO is not currently supported. 其实不仅仅是 blkio 权重，其它的限制也只能针对直写 IO 有效。
 
 ```
 # docker run -it --name c1 --blkio-weight 300 ubuntu
@@ -285,7 +288,8 @@ root@7df60a2ff701:/# dd if=test.out of=/dev/null bs=1M
 10485760 bytes (10 MB, 10 MiB) copied, 10.0227 s, 1.0 MB/s
 ```
 
-> __Note：__ 测试读性能的时候必须添加 `--privileged` 选项启用超级权限，否则无法操作 `/proc/sys/vm/drop_caches` 文件清空缓存。
+> **[info] 标注**  
+> 测试读性能的时候必须添加 `--privileged` 选项启用超级权限，否则无法操作 `/proc/sys/vm/drop_caches` 文件清空缓存。
 
 * `--device-read-iops`、`--device-write-iops`
 

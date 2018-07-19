@@ -93,8 +93,6 @@ Usage of ./kubelet:
 | --network-plugin string | <警告: Alpha 特性> 指定网络插件名称，如 `"--network-plugin=cni"` 指定使用 `cni` 插件 |
 | --network-plugin-mtu int32 | <警告: Alpha 特性> 通过网络插件传值 MTU，覆盖系统默认值。 如果设置为 0 则默认使用 `1460` MTU. |
 
-> __注：__ Kubernetes `v1.7` 版本笔者没有实际测试 Calico cni 网络，当前运行 Calico cni 网络的环境版本为 `v1.5.7`，后续实测之后进一步更新。
-
 ### Volume 卷配置项
 
 | 选项 | 说明  |
@@ -120,7 +118,8 @@ Usage of ./kubelet:
 | --system-cgroups / | Optional absolute name of cgroups in which to place all non-kernel processes that are not already inside a cgroup under /. Empty for no container. Rolling back the flag requires a reboot. |
 | --system-reserved-cgroup string | Absolute name of the top level cgroup that is used to manage non-kubernetes components for which compute resources were reserved via '--system-reserved' flag. Ex. '/system-reserved'.  默认 `''` |
 
-> __注：__ cgroup 相关选项有些笔者没有深入相关调研，建议使用默认值即可
+> **[info] 标注**  
+> cgroup 相关选项有些笔者没有深入相关调研，建议使用默认值即可
 
 ### event 配置项
 
@@ -131,7 +130,8 @@ Usage of ./kubelet:
 | --event-storage-age-limit string | Max length of time for which to store events (per type). Value is a comma separated list of key values, where the keys are event types (e.g.: creation, oom) or "default" and the value is a duration. Default is applied to all non-specified event types (default "default=0") |
 | --event-storage-event-limit string | Max number of events to store (per type). Value is a comma separated list of key values, where the keys are event types (e.g.: creation, oom) or "default" and the value is an integer. Default is applied to all non-specified event types (default "default=0") |
 
-> __注：__ event 配置项笔者也没有进行相关设置，建议使用默认值即可
+> **[info] 标注**  
+> event 配置项笔者也没有进行相关设置，建议使用默认值即可
 
 ### Pod `eviction` 配置项
 
@@ -173,5 +173,5 @@ KUBELET_API_SERVER="--api-servers=http://<apiserver>:8080"
 KUBELET_POD_INFRA_CONTAINER="--pod-infra-container-image=<private_registry>/google_containers/pause-amd64:3.0"
 
 # Add your own! --cluster-dns 根据实际选项填写
-KUBELET_ARGS="--cluster-dns=<kubedns-ip> --image-gc-high-threshold=85 --image-gc-low-threshold=70 --serialize-image-pulls=false --cgroup-driver=systemd --fail-swap-on=false --max-pods=30 --container-runtime=docker --cloud-provider="""
+KUBELET_ARGS="--cluster-dns=<kubedns-ip> --image-gc-high-threshold=85 --image-gc-low-threshold=70 --serialize-image-pulls=false --cgroup-driver=systemd --fail-swap-on=false --max-pods=50 --container-runtime=docker --cloud-provider="""
 ```

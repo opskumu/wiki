@@ -3,6 +3,9 @@
         "-sharing",
         "github",
         "anchors",
+        "puml",
+        "alerts",
+        "todo",
         "anchor-navigation-ex",
         "expandable-chapters",
         "theme-comscore"

@@ -35,14 +35,13 @@ fi
 
 Docker daemon 可以三种不同类型的 Socket 监听 Docker API 请求：unix，tcp，fd。默认情况下，会创建一个名为 `/var/run/docker.sock` 的 unix Socket 文件，该文件的访问权限需要是 root 权限或者属于 docker 组。如果有远程访问需求，那么则需要开启 tcp Socket。正常开启 tcp Socket，是没有任何加密和安全认证的，可以通过 HTTPS 等方式加密 tcp Socket，默认不建议开启 tcp Socket。
 
-> __Note：__ If you’re using an HTTPS encrypted socket, keep in mind that only TLS1.0 and greater are supported. Protocols SSLv3 and under are not supported anymore for security reasons.
-
 ```
 # ls -l /var/run/docker.sock
 srw-rw---- 1 root root 0 Sep 13 00:53 /var/run/docker.sock
 ```
 
-> Note：默认情况下，没有 `docker` 用户组，需要手动创建才会有。但是不建议授权非 root 用户到 docker 组，如此该用户就等于拥有 root 权限了（如直接 mount 宿主根目录到容器，即可变相获取 root 用户的权限）。
+> **[info] 标注**  
+> 默认情况下，没有 `docker` 用户组，需要手动创建才会有。但是不建议授权非 root 用户到 docker 组，如此该用户就等于拥有 root 权限了（如直接 mount 宿主根目录到容器，即可变相获取 root 用户的权限）。
 
 ```
 # groupadd docker
@@ -74,10 +73,11 @@ Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docke
 # docker ps
 ```
 
-> ```
-> # listen using the default unix socket, and on 2 specific IP addresses on this host. 指定多种连接
-> $ sudo dockerd -H unix:///var/run/docker.sock -H tcp://192.168.59.106 -H tcp://10.10.10.2
-> ```
+指定多种连接：
+
+```
+$ sudo dockerd -H unix:///var/run/docker.sock -H tcp://192.168.59.106 -H tcp://10.10.10.2
+```
 
 ### Daemon storage-driver 选项
 
@@ -129,8 +129,8 @@ Storage Driver: devicemapper
  Metadata file: /dev/loop1
 ... ...
 ```
-
-> __Note：__ 考虑到 `daemon.json` 是跨平台的，并且为了和系统初始化脚本配置冲突的问题，所以 Docker 官方推荐使用 `daemon.json` 方式代替 `--storage-driver` 选项方式。
+> **[info] 标注**  
+> 考虑到 `daemon.json` 是跨平台的，并且为了和系统初始化脚本配置冲突的问题，所以 Docker 官方推荐使用 `daemon.json` 方式代替 `--storage-driver` 选项方式。
 
 移除 `--storage-driver` 选项，并且在 `/etc/docker/daemon.json` 文件中添加配置，如果文件不存在则创建即可。
 
@@ -142,7 +142,8 @@ Storage Driver: devicemapper
 # systemctl restart docker
 ```
 
-> __Note：__ 以上指定存储驱动为 devicemapper，如果不添加其它选项，那么此时属于 `loop-lvm` 模式，这种模式下因为回环设备的原因，性能比较差，只适用于测试环境下使用。针对生产环境，则建议使用 `direct-lvm` 模式，后文会专门针对存储驱动做详细介绍。
+> **[info] 标注**  
+> 以上指定存储驱动为 devicemapper，如果不添加其它选项，那么此时属于 `loop-lvm` 模式，这种模式下因为回环设备的原因，性能比较差，只适用于测试环境下使用。针对生产环境，则建议使用 `direct-lvm` 模式，后文会专门针对存储驱动做详细介绍。
 
 ### Docker runtime execution 选项
 
@@ -168,7 +169,8 @@ ExecStart=/usr/bin/dockerd-current \
 Cgroup Driver: cgroupfs
 ```
 
-> __Note：__ 如无特别需求，Cgroup Driver 保持默认即可。
+> **[info] 标注**  
+> 如无特别需求，Cgroup Driver 保持默认即可。
 
 ### Daemon DNS 选项
 
@@ -189,7 +191,8 @@ Docker 认为一个私有仓库要么安全的，要么就是不安全的。以�
 
 默认情况下，Registry V1 协议是被禁用的，Docker daemon 不会在执行 push、pull 以及 login 操作的时候去尝试通过 V1 协议去连接。可以通过 `--disable-legacy-registry=false` 启用该选项。需要注意的是，在 Docker 17.12 版本中该选项将会被移除，不再支持 Registry V1。
 
-> __Note：__ Interaction v1 registries will no longer be supported in Docker v17.12, and the disable-legacy-registry configuration option will be removed.
+> **[info] 标注**  
+> Docker v17.12 之后 `disable-legacy-registry` 配置选项不再支持。
 
 ### Default ulimit settings
 

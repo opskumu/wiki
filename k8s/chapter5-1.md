@@ -265,7 +265,8 @@ func InitNetworkPlugin(plugins []NetworkPlugin, networkPluginName string, host H
 }
 ```
 
-> __注：__ 上文 hairpinMode 设置 haripin NAT 方式，使得服务后端 endpoints 访问服务自身时负载到本地，配置项为 `--hairpin-mode`，默认值 `promiscuous-bridge`
+> **[info] 标注**  
+> 上文 hairpinMode 设置 haripin NAT 方式，使得服务后端 endpoints 访问服务自身时负载到本地，配置项为 `--hairpin-mode`，默认值 `promiscuous-bridge`
 
 - `pkg/kubelet network/cni/cni.go`
 
