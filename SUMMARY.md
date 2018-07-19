@@ -22,3 +22,4 @@
         * [kubelet](k8s/chapter4-5.md)
     * 源码解析
       * [kubelet](k8s/chapter5-1.md)
+    * [Google 大规模集群管理器 Borg](k8s/borg.md)
