@@ -74,5 +74,5 @@ __`Patition`__
 
 `RollingUpdate` 更新策略可以分区操作，通过指定 `.spec.updateStrategy.rollingUpdate.partition` 选项。如果指定了分区，则更新 StatefulSet 的 `.spec.template` 时，将更新序数大于或者等于该分区的所有 Pods。序数小于分区的所有 Pods 都不会更新，即使被删除，也会以之前的版本重建。如果 StatefulSet 的 `.spec.updateStrategy.rollingUpdate.partition` 大于 `.spec.replicas`，则即使 `.spec.template` 更新了，Pod 也不会被更新。
 
-> **[info] 标注**
+> **[info] 标注**  
 > 大多数情况下是不需要使用分区的，但是如果有金丝雀或者分阶段更新需求，那么分区将会很有用。
