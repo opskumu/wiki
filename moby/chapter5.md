@@ -208,7 +208,7 @@ LABEL <key>=<value> \
       <key>=<value> ...
 ```
 
-`LABEL` 指令主要用于添加镜像的元数据，是一个 key-value 键值对，使用实例如下：
+`LABEL` 指令主要用于添加镜像的元数据，是一个 key-value 键值对，使用示例如下：
 
 ```
 LABEL "com.example.vendor"="ACME Incorporated"

@@ -26,7 +26,17 @@ Pods 是 Kubernetes 中创建和管理的最小可部署计算单元，一个 po
 
 ## Deployments
 
-Deployment 提供了 pod 和 ReplicaSet 的更新声明。一般情况下不需要单独创建 ReplicaSet，而是直接通过创建 deployments，由 deployments 创建管理 ReplicaSet。此外，Deployments 还提供了滚动更新、回滚、暂停、恢复等功能。
+Deployments 提供了 pod 和 ReplicaSets 的更新声明。一般情况下不需要单独创建 ReplicaSet，而是直接通过创建 Deployments，由 Deployments 创建管理 ReplicaSet。此外，Deployments 还提供了滚动更新、回滚、暂停、恢复等功能。
+
+## StatefulSets
+
+StatefulSets 同 Deployments/Replicas 类似，相较于 Deployments/ReplicaSets 对应无状态服务，StatefulSets 则针对有状态服务。StatefulSets 适用于以下特性的应用：
+
+* 稳定唯一的网络标识
+* 稳定持久性存储
+* 有序优雅的部署和扩展
+* 有序优雅的删除和销毁
+* 有序自动更新
 
 ## Jobs and CronJob
 

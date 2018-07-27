@@ -14,12 +14,14 @@
 ---
 
 * Kubernetes 手册
-    * [概述](k8s/chapter1.md)
-    * [术语](k8s/chapter2.md)
-    * [集群构建](k8s/chapter3.md)
-        * [从头开始构建 Kubernetes 集群](k8s/chapter3-1.md)
+    * [概述](k8s/arch.md)
+    * [理论](k8s/concepts.md)
+        * [StatefulSets](k8s/concepts-statefulsets.md)
+    * [集群构建](k8s/install.md)
+        * [从头开始构建 Kubernetes 集群](k8s/install-manual.md)
     * 组件配置
-        * [kubelet](k8s/chapter4-5.md)
+        * [kubelet](k8s/cfg-kubelet.md)
     * 源码解析
-      * [kubelet](k8s/chapter5-1.md)
-    * [Google 大规模集群管理器 Borg](k8s/borg.md)
+      * [kubelet](k8s/src-kubelet.md)
+    * 译文
+      * [Google 大规模集群管理器 Borg](k8s/borg.md)
