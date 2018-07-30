@@ -30,8 +30,7 @@ Docker 镜像是 Docker 容器运行时的只读模板，每一个镜像由一�
 
 ### 拓展
 
-- [Visualizing Docker Containers and Images
-    ](http://merrigrove.blogspot.com/2015/10/visualizing-docker-containers-and-images.html)
+- [Visualizing Docker Containers and Images](http://merrigrove.blogspot.com/2015/10/visualizing-docker-containers-and-images.html)
 
 ## Docker 原理
 

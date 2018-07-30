@@ -1014,7 +1014,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/s
 Starting to serve on 192.168.150.129:8001
 ```
 
-> **[info] 标注**  
+> **[warning] 标注**  
 > 注意添加 `--accept-hosts='^*$'` 选项，否则会显示页面 `<h3>Unauthorized</h3>` 。
 
 浏览器访问如下地址：
