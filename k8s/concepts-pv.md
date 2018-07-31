@@ -14,6 +14,34 @@
 
 > 图摘自 [Kubernetes in action](https://www.manning.com/books/kubernetes-in-action)
 
+### PersistentVolumes
+
+#### 访问模式
+
+* ReadWriteOnce(RWO) - 卷只能被一个节点读写挂载
+* ReadOnlyMany(ROX) - 卷可以被多个节点以只读方式挂载
+* ReadWriteMany(RWX) - 卷可以被多个节点读写挂载
+
+#### Class
+
+一个 PV 可以术语一个 class，通过 `storageClassName` 字段指定 [StorageClass](https://kubernetes.io/docs/concepts/storage/storage-classes/) 的名字。特定 class 的 PV 只能绑定请求指定 class 的 PVCs，没有指定 `storageClassName` 的 PV 则只能绑定没有指定 class PVCs。
+
+> **[warning] 警告**  
+> 早期版本，使用 annotation `volume.beta.kubernetes.io/storage-class` 替代 `storageClassName`。当前 annotation 依然生效，不过在后续版本会被废弃。
+
+#### 状态
+
+* Available – 可用 PV，未绑定任何 PVC
+* Bound – 已经绑定相关 PVC
+* Released – PVC 被删除，资源还未被回收
+* Failed – 动态回收失败
+
+### PersistentVolumeClaims
+
+#### Class
+
+同 `PersistentVolume`，`PersistentVolumeClaim` 可以通过 `storageClassName` 指定 [StorageClass](https://kubernetes.io/docs/concepts/storage/storage-classes/) 的名字。只有同 PVC 相同 `storageClassName` 的 PVs，才可以绑定到此 PVC。
+
 ## 卷和声明的生命周期
 
 PVs 是集群中的资源，PVCs 是对这些资源的请求，它们遵循以下生命周期：
@@ -28,7 +56,7 @@ __静态__
 
 __动态__
 
-当用户的 `PersistentVolumeClaim` 没有匹配到管理员创建的 PVs 时，集群可能会尝试为 PVC 专门配置动态卷。这种动态提供基于 `StorageClasses`：PVC 必须请求一个 [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/) 并且管理员必须创建和配置 class 以达到动态提供的目的。
+当用户的 `PersistentVolumeClaim` 没有匹配到管理员创建的 PVs 时，集群可能会尝试为 PVC 专门配置动态卷。这种动态提供基于 `StorageClasses`：PVC 请求 [storage class](https://kubernetes.io/docs/concepts/storage/storage-classes/) ，storage class 由管理员创建和配置以达到动态提供的目的。
 
 ![](images/storage-class.png)
 
@@ -50,3 +78,25 @@ __动态__
 Pods 使用声明作为卷，集群通过检查声明关联卷并挂载卷到 pod。当一个用户拥有一个 PVC 并且已经处于绑定状态，那么绑定的 PV 只要用户需要，会一直属于他。用户通过他们 Pod volumes 块的 `persistentVolumeClaim` 调度和访问他们声明的 PVs。
 
 ### 回收
+
+当用户使用完存储卷，他们可以通过 API 删除 PVC 对象允许资源回收。`PersistentVolume` 回收策略定义集群在 PVC 释放后如何处理，当前支持保留、回收或者删除。
+
+__保留__
+
+`Retain` 回收策略允许手动回收资源，当 `PersistentVolumeClaim` 删除后，`PersistentVolume` 仍然存在并处于 "Released" 状态。因为之前声明的数据仍然存在卷上，PV 依然不能被其它 PVC 绑定。管理员可以通过以下操作回收卷：
+
+* 1、删除 `PersistentVolume`。删除后，关联的存储在外部基础设施（例如 AWS EBS，GCE PD，Azure Disk 或者 Cinder 卷）依然存在
+* 2、手动清理相关存储数据
+* 3、手动删除相关存储资产，或者如果需要重用，可以重新创建一个新的 `PersistentVolume`
+
+__删除__
+
+对于支持 `Delete` 回收策略的卷插件，删除会移除 `PersistentVolume`，以及外部关联的存储资源，如 AWS EBS、GCE PD、Azure Disk 或者 Cinder 卷。 `StorageClass` 默认的回收策略为 `Delete`，管理员应该根据用户的期望配置该选项，否则需要更新 PV 策略 [Change the Reclaim Policy of a PersistentVolume](https://kubernetes.io/docs/tasks/administer-cluster/change-pv-reclaim-policy/)。
+
+__回收__
+
+使用 `Recycle` 回收策略，会自动清理数据并使其可以被其它新的声明使用。
+
+> **[warning] 警告**  
+> `Recycle` 回收策略已经被废弃，推荐使用动态供应代替（即 `StorageClass`）
+
