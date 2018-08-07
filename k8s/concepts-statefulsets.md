@@ -26,7 +26,7 @@ StatefulSet `pod.Spec.TerminationGracePeriodSeconds` 值不应该指定为 `0`�
 
 ## 组件
 
-* Headless Service，用于域名注册
+* Headless Service 用于域名注册
 * volumeClaimTemplates 用于提供存储
 
 ### Pod 选择器
