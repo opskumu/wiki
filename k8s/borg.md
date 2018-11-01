@@ -1,6 +1,6 @@
 # Google 大规模集群管理器 Borg
 
-* [Large-scale cluster management at Google with Borg](https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/43438.pdf)
+* 原文地址：[Large-scale cluster management at Google with Borg](https://static.googleusercontent.com/media/research.google.com/zh-CN//pubs/archive/43438.pdf)
 
 ## Abstract
 

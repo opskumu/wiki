@@ -23,6 +23,9 @@
         },
         "github": {
             "url": "https://github.com/opskumu"
+        },
+        "theme-default":{
+            "showLevel": true
         }
     }
 }

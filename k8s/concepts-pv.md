@@ -28,7 +28,7 @@
 
 #### Class
 
-一个 PV 可以术语一个 class，通过 `storageClassName` 字段指定 [StorageClass](https://kubernetes.io/docs/concepts/storage/storage-classes/) 的名字。特定 class 的 PV 只能绑定请求指定 class 的 PVCs，没有指定 `storageClassName` 的 PV 则只能绑定没有指定 class PVCs。
+一个 PVC 可以通过 `storageClassName` 字段指定 [StorageClass](https://kubernetes.io/docs/concepts/storage/storage-classes/) 的名称来请求特定 class。只有所请求 class 的 PVs 才能绑定到请求指定相同 class 的 PVCs。
 
 > **[warning] 警告**  
 > 早期版本，使用 annotation `volume.beta.kubernetes.io/storage-class` 替代 `storageClassName`。当前 annotation 依然生效，不过在后续版本会被废弃。
