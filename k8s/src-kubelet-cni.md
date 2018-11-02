@@ -1,4 +1,4 @@
-# Kubelet
+# Kubelet CNI
 
 - `cmd/kubelet/kubelet.go`
 - `pkg/kubelet/kubelet.go`
