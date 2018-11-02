@@ -1,12 +1,12 @@
 # SUMMARY
 
-* [说明](README.md)
+* [TODO](todo.md)
 
 ---
 
 * Docker
     * [理论概述](moby/chapter1.md)
-    * [安装入门](moby/chapter2.md)
+    * [安装入门](moby/chapter2.md)
     * [配置说明](moby/chapter3.md)
     * [基础命令](moby/chapter4.md)
     * [镜像构建](moby/chapter5.md)
@@ -24,10 +24,9 @@
     * [集群构建](k8s/install.md)
         * [从头开始构建 Kubernetes 集群](k8s/install-manual.md)
     * 组件
-        * Kubelet
-            * [Kubelet 配置说明](k8s/cfg-kubelet.md)
-        * 网络
-            * [Calico BGP 网络](k8s/calico.md)
-            * [Kubelet CNI 源码解析](k8s/src-kubelet-cni.md)
+        * [Kubelet](k8s/kubelet.md)
+    * 网络
+        * [Calico BGP 网络](k8s/calico.md)
+        * [Kubelet CNI 源码解析](k8s/src-kubelet-cni.md)
     * 译文
-      * [Google 大规模集群管理器 Borg](k8s/borg.md)
+        * [Google 大规模集群管理器 Borg](k8s/borg.md)

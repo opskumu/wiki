@@ -1,4 +1,6 @@
-# kubelet 配置项
+# Kubelet
+
+## 配置项
 
 ```
 [root@k8s bin]# ./kubelet --version
@@ -10,9 +12,9 @@ Usage of ./kubelet:
       ... ...
 ```
 
-## 配置说明
+### 配置说明
 
-### 基本配置项
+#### 基本配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -36,7 +38,7 @@ Usage of ./kubelet:
 | --resolv-conf string | DNS 解析文件指定，默认为 `"/etc/resolv.conf"` |
 | --root-dir string | 用于管理 kubelet 文件（volume mounts 等）目录路径，默认 `"/var/lib/kubelet"` |
 
-### 认证配置项
+#### 认证配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -48,7 +50,7 @@ Usage of ./kubelet:
 | --tls-cert-file string | 包含 x509 证书的文件路径，用于提供 HTTPS 服务，如果未提供 `--tls-cert-file` 和 `--tls-private-key-file`，则会为公用地址生成自签名证书和密钥，并保存到 `--cert-dir` 目录 |
 | --tls-private-key-file string | 包含 X509 匹配 `--tls-cert-file` 私钥的文件路径 |
 
-### 日志配置项
+#### 日志配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -61,7 +63,7 @@ Usage of ./kubelet:
 | --stderrthreshold severity | 超过此阈值的日志将转到 stderr，默认为 `2` |
 | -v, --v Level | log level for V logs |
 
-### Docker 配置项
+#### Docker 配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -72,7 +74,7 @@ Usage of ./kubelet:
 | --docker-exec-handler string | 容器中执行命令 Handler 指定，有 `"native"` 和 `"nsenter"` 可选，默认 `"native"` |
 | --docker-only | 除了根信息统计之外，只报告 docker 容器统计数据 |
 
-### 镜像配置项
+#### 镜像配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -84,7 +86,7 @@ Usage of ./kubelet:
 | --registry-qps int32 | 如果 > 0, 限制 registry pull QPS 为指定值，如果为 0, 则不限制，默认 `5` |
 | --serialize-image-pulls | 一次只 pull 一个镜像。在 docker daemon 版本 < 1.9 或者使用 Aufs 存储驱动的时候不建议修改默认值。具体可以参见 Issue #10959，默认 `true` |
 
-### 网络配置项
+#### 网络配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -93,7 +95,7 @@ Usage of ./kubelet:
 | --network-plugin string | <警告: Alpha 特性> 指定网络插件名称，如 `"--network-plugin=cni"` 指定使用 `cni` 插件 |
 | --network-plugin-mtu int32 | <警告: Alpha 特性> 通过网络插件传值 MTU，覆盖系统默认值。 如果设置为 0 则默认使用 `1460` MTU. |
 
-### Volume 卷配置项
+#### Volume 卷配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -102,7 +104,7 @@ Usage of ./kubelet:
 | --volume-plugin-dir string | <警告: Alpha 特性> 指定搜索其他第三方卷插件的目录绝对路径 ，默认 `"/usr/libexec/kubernetes/kubelet-plugins/volume/exec/"` |
 | --volume-stats-agg-period duration |  指定 kubelet 所有 pod 统计以及缓存卷磁盘使用率的时间间隔。如果要禁用，设置该值为 0 即可，默认 `1m0s` |
 
-### cgroup/namespace 配置项
+#### cgroup/namespace 配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -121,7 +123,7 @@ Usage of ./kubelet:
 > **[info] 标注**  
 > cgroup 相关选项有些笔者没有深入相关调研，建议使用默认值即可
 
-### event 配置项
+#### event 配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -133,7 +135,7 @@ Usage of ./kubelet:
 > **[info] 标注**  
 > event 配置项笔者也没有进行相关设置，建议使用默认值即可
 
-### Pod `eviction` 配置项
+#### Pod `eviction` 配置项
 
 | 选项 | 说明  |
 | :-- | :--  |
@@ -149,7 +151,7 @@ Usage of ./kubelet:
 * [Eviction Policy](https://kubernetes.io/docs/tasks/administer-cluster/out-of-resource/#eviction-policy)
 * [Learn how kubelet eviction policies impact cluster rebalancing](https://blog.kublr.com/learn-how-kubelet-eviction-policies-impact-cluster-rebalancing-2e976ebc53ea)
 
-## 推荐配置项
+### 推荐配置项
 
 __/etc/kubernetes/kubelet__
 
