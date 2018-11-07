@@ -23,10 +23,12 @@
         * [Persistent Volumes](k8s/concepts-pv.md)
     * [集群构建](k8s/install.md)
         * [从头开始构建 Kubernetes 集群](k8s/install-manual.md)
-    * 组件
+    * 集群调度
+        * [亲和性和反亲和性](k8s/assigning-pods-to-nodes.md)
+    * 集群组件
         * [Kubelet](k8s/kubelet.md)
-    * 网络
+    * 网络方案
         * [Calico BGP 网络](k8s/calico.md)
         * [Kubelet CNI 源码解析](k8s/src-kubelet-cni.md)
-    * 译文
+    * 相关译文
         * [Google 大规模集群管理器 Borg](k8s/borg.md)
