@@ -12,7 +12,8 @@
         "todo",
         "anchor-navigation-ex",
         "expandable-chapters",
-        "theme-comscore"
+        "theme-comscore",
+        "tbfed-pagefooter"
     ],
     "pluginsConfig": {
         "anchor-navigation-ex": {
@@ -30,6 +31,11 @@
         },
         "theme-default":{
             "showLevel": true
+        },
+        "tbfed-pagefooter": {
+            "copyright":"Copyright &copy; 2018 <a href=\"https://opskumu.com\">Kumu</a>",
+            "modify_label": "该文件修订时间：",
+            "modify_format": "YYYY-MM-DD HH:mm:ss"
         }
     }
 }
