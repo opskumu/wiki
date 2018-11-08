@@ -185,7 +185,7 @@ spec:
 * 3、针对 `podAntiAffinity` 中的 `preferredDuringSchedulingIgnoredDuringExecution`，`topologyKey` 为空，则代表所有拓扑（仅限于 `kubernetes.io/hostname`, `failure-domain.beta.kubernetes.io/zone` and `failure-domain.beta.kubernetes.io/region`）
 * 4、除了以上情况，`topologyKey` 可以为任意合法的键值对
 
-除了 `labelSelector` 和 `topologyKey`，还可以指定 namespace 的 `labelSelector` 作为匹配。
+除了 `labelSelector` 和 `topologyKey`，还可以指定 namespace 的 `labelSelector` 作为匹配。`labelSelector` 和 `topologyKey` 属于同一级别，如果未定义或设置为空值，那么默认为定义 pod affinity 和 anti-affinity 所在的空间。
 
 ## 实践案例
 
@@ -263,3 +263,5 @@ spec:
       - name: web-app
         image: nginx:1.12-alpine
 ```
+
+> 相关更多应用场景，建议阅读 [抽象优雅的 Affinity](http://wsfdl.com/kubernetes/2018/06/30/k8s-scheduler-1-affinity.html)，讲解的非常详细。
