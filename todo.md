@@ -14,3 +14,13 @@
 - [ ] 自定义 Kubernetes Scheduler
 - [ ] Taints and Tolerations
 - [ ] Reserve Compute Resources for System Daemons
+
+> 这周内容基本没完成，Borg 论文只翻译至 5.1~5.3，所有任务顺延
+> 上上周没有完成是因为有时间就打王者荣耀，这周除了王者荣耀，看日剧 Doctor-X 没停下来... So sad
+
+## 2018-11-19~25
+
+- [ ] Borg 论文翻译完成（已完成到 5-3）
+- [ ] 自定义 Kubernetes Scheduler
+- [ ] Taints and Tolerations
+- [ ] Reserve Compute Resources for System Daemons
