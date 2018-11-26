@@ -25,3 +25,12 @@
 - [ ] 自定义 Kubernetes Scheduler
 - [ ] Taints and Tolerations
 - [ ] Reserve Compute Resources for System Daemons
+
+> 好像找不到什么借口，TODO 是专门用来打脸的，干巴地...
+
+## 2018011-26~30
+
+- [ ] Borg 论文翻译完成（已完成到 5-3）
+- [ ] 自定义 Kubernetes Scheduler
+- [ ] Taints and Tolerations
+- [ ] Reserve Compute Resources for System Daemons
