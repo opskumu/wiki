@@ -16,7 +16,7 @@
 * Kubernetes
     * [架构概览](k8s/arch.md)
     * [基础术语](k8s/concepts.md)
-    * 工作负载
+    * [工作负载](k8s/workload.md)
         * [Deployments](k8s/concepts-deployments.md)
         * [StatefulSets](k8s/concepts-statefulsets.md)
     * 存储
