@@ -1,6 +1,6 @@
 # 文档规划
 
-- [ ] Borg 论文翻译完成（已完成到 7）
+- [ ] Borg 论文翻译完成（已完成到第七节）
 - [ ] 自定义 Kubernetes Scheduler
 - [ ] Taints and Tolerations
 - [ ] Reserve Compute Resources for System Daemons
@@ -30,4 +30,4 @@
 
 ## 2018-12-03~09
 
-> * 2018-12-06 22:30：完成 Borg 论文翻译到第七章倒数第七段 
+> * 2018-12-06 22:30：完成 Borg 论文翻译到第七节（Omega 段落后暂未翻译） 
