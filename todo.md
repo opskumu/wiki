@@ -1,11 +1,22 @@
 # 文档规划
 
-- [ ] Borg 论文翻译完成（已完成到第七节）
+---
+
+- __TODO:__
+
 - [ ] 自定义 Kubernetes Scheduler
 - [ ] Taints and Tolerations
 - [ ] Reserve Compute Resources for System Daemons
 - [ ] Kubeadm 部署流程调研
+
+---
+
+- __DONE:__
+
+- [x] Borg 论文翻译完成
 - [x] 添加节点亲和性、Pod 亲和性和反亲和性章节内容
+
+---
 
 ## 2018-11-03~11
 
@@ -30,4 +41,7 @@
 
 ## 2018-12-03~09
 
+- [x] Borg 论文翻译完成
+
 > * 2018-12-06 22:30：Borg 论文翻译到第七节（Omega 段落后暂未翻译） 
+> * 2018-12-07 22:54: 完成 Borg 论文翻译，握爪（翻译论文真的很痛苦啊，虽然有 Google，完全不想再来第二次。初稿很多地方估计有问题，有时间需要好好校对一下）
