@@ -4,6 +4,7 @@
 - [ ] 自定义 Kubernetes Scheduler
 - [ ] Taints and Tolerations
 - [ ] Reserve Compute Resources for System Daemons
+- [ ] Kubeadm 部署流程调研
 - [x] 添加节点亲和性、Pod 亲和性和反亲和性章节内容
 
 ## 2018-11-03~11
