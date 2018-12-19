@@ -7,6 +7,7 @@
 - [ ] 自定义 Kubernetes Scheduler
 - [ ] Taints and Tolerations
 - [ ] Reserve Compute Resources for System Daemons
+- [ ] Using sysctls in a Kubernetes Cluster 
 - [ ] Kubeadm 部署流程调研
 
 ---
@@ -45,3 +46,7 @@
 
 > * 2018-12-06 22:30：Borg 论文翻译到第七节（Omega 段落后暂未翻译） 
 > * 2018-12-07 22:54: 完成 Borg 论文翻译，握爪（翻译论文真的很痛苦啊，虽然有 Google，完全不想再来第二次。初稿很多地方估计有问题，有时间需要好好校对一下）
+
+## 2018-12~10~15
+
+> :)
