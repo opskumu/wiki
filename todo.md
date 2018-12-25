@@ -9,6 +9,7 @@
 - [ ] Reserve Compute Resources for System Daemons
 - [ ] Using sysctls in a Kubernetes Cluster 
 - [ ] Kubeadm 部署流程调研
+- [ ] Kubernetes 镜像和容器 GC 机制
 
 ---
 
