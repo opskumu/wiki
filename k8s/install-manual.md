@@ -648,7 +648,12 @@ cfssl print-defaults csr > api-server.json
     "CN": "server",
     "hosts": [
         "192.168.150.129",
-        "10.254.0.1"
+        "10.254.0.1",
+        "kubernetes",
+        "kubernetes.default",
+        "kubernetes.default.svc",
+        "kubernetes.default.svc.cluster",
+        "kubernetes.default.svc.cluster.local"
     ],
     "key": {
         "algo": "rsa",
