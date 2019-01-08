@@ -647,6 +647,7 @@ cfssl print-defaults csr > api-server.json
 {
     "CN": "server",
     "hosts": [
+        "127.0.0.1",
         "192.168.150.129",
         "10.254.0.1",
         "kubernetes",
