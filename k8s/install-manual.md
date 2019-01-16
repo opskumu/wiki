@@ -421,48 +421,6 @@ e4f0cdb23f2f804e: name=192.168.150.131 peerURLs=https://192.168.150.131:2380 cli
 yum install -y docker
 ```
 
-修改默认 docker systemd 配置文件 `/usr/lib/systemd/system/docker.service` 如下：
-
-```
-[Unit]
-Description=Docker Application Container Engine
-Documentation=http://docs.docker.com
-After=network.target docker-containerd.service
-Wants=docker-storage-setup.service
-Requires=docker-containerd.service
-
-[Service]
-Type=notify
-EnvironmentFile=-/etc/sysconfig/docker
-EnvironmentFile=-/etc/sysconfig/docker-storage
-EnvironmentFile=-/etc/sysconfig/docker-network
-Environment=GOTRACEBACK=crash
-ExecStart=/usr/bin/dockerd-current \
-          --add-runtime oci=/usr/libexec/docker/docker-runc-current \
-          --default-runtime=oci \
-          --containerd /run/containerd.sock \
-          --exec-opt native.cgroupdriver=systemd \
-          --userland-proxy-path=/usr/libexec/docker/docker-proxy-current \
-          --init-path=/usr/libexec/docker/docker-init-current \
-          --seccomp-profile=/etc/docker/seccomp.json \
-          $OPTIONS \
-          $DOCKER_STORAGE_OPTIONS \
-          $DOCKER_NETWORK_OPTIONS \
-          $ADD_REGISTRY \
-          $BLOCK_REGISTRY \
-          $INSECURE_REGISTRY \
-          $REGISTRIES
-ExecReload=/bin/kill -s HUP $MAINPID
-LimitNOFILE=1048576
-LimitNPROC=1048576
-LimitCORE=infinity
-TimeoutStartSec=0
-Restart=on-abnormal
-
-[Install]
-WantedBy=multi-user.target
-```
-
 取消 `/etc/sysconfig/docker` 默认 __OPTIONS__ 配置（统一配置在 `/etc/docker/daemon.json`）：
 
 ```
