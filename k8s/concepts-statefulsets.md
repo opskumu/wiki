@@ -54,7 +54,7 @@ StatefulSet 中的每个 Pod 都从 StatefulSet 的名称和 Pod 序号派生出
 
 ### Pod 管理策略
 
-K8s 1.7 之后，StatefulSet 通过 `.spec.podManagementPolicy` 字段可以设置是否严格按照顺序部署和扩容缩容操作。
+K8s 1.7 之后，StatefulSet 通过 `.spec.podManagementPolicy` 字段可以设置是否严格按照顺序部署和扩容缩容操作。
 
 __`OrderedReady` Pod 管理__
 

@@ -36,7 +36,7 @@ StatefulSets 同 Deployments/Replicas 类似，相较于 Deployments/ReplicaSets
 * 稳定持久性存储
 * 有序优雅的部署和扩展
 * 有序优雅的删除和销毁
-* 有序自动更新
+* 有序自动更新
 
 ## Jobs and CronJob
 

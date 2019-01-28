@@ -14,21 +14,21 @@ Kubernetes 控制平面由一系列组件组成，可以运行在一个单独的
 
 - kube-apiserver
 
-API server 提供 [Kubernetes API](https://kubernetes.io/docs/concepts/overview/kubernetes-api/)。API server 扮演集群网关的角色，它主要处理 REST 操作，验证并更新到 `etcd` 存储。
+API server 提供 [Kubernetes API](https://kubernetes.io/docs/concepts/overview/kubernetes-api/)。API server 扮演集群网关的角色，它主要处理 REST 操作，验证并更新到 `etcd` 存储。
 
 ### 集群状态存储（Cluster state store）
 
 - etcd
 
-`etcd` 是一个分布式 key-value 数据库，Kubernetes 用 `etcd` 作为后端数据存储。集群所有的持久性状态都存储在 `etcd` 实例中。`etcd` 提供了可靠配置数据存储。通过 `watch` 的支持，可以非常快速地通知协调组件变更。
+`etcd` 是一个分布式 key-value 数据库，Kubernetes 用 `etcd` 作为后端数据存储。集群所有的持久性状态都存储在 `etcd` 实例中。`etcd` 提供了可靠配置数据存储。通过 `watch` 的支持，可以非常快速地通知协调组件变更。
 
-### 控制管理服务（Controller-Manager Server）
+### 控制管理服务（Controller-Manager Server）
 
 - kube-controller-manager
 
 集群内部的管理控制中心，如 Node、Volume、Deployment 、Service 等资源管理，以及空间生命周期，Pod GC、节点 GC 等。
 
-### 调度器（Scheduler）
+### 调度器（Scheduler）
 
 - kube-scheduler
 
@@ -48,12 +48,12 @@ Kubelet 决定 Pod 是否可以运行在给定的节点上的最终决策者，�
 
 ### Kube Proxy
 
-service 的抽象提供了一种在公共访问策略（如负载均衡）下对 pod 进行分组的方式。Service 通过创建 VIP，提供给客户端访问，再透明代理到 Service 中的 pods。每个节点都运行一个 kube-proxy 进程，该进程维护一套 iptables 规则，以捕获对服务 IPs 的访问，并重定向到正确的后端（1.12.x ipvs 正式 GA，性能相对 iptables 有很大的提升）。
+service 的抽象提供了一种在公共访问策略（如负载均衡）下对 pod 进行分组的方式。Service 通过创建 VIP，提供给客户端访问，再透明代理到 Service 中的 pods。每个节点都运行一个 kube-proxy 进程，该进程维护一套 iptables 规则，以捕获对服务 IPs 的访问，并重定向到正确的后端（1.12.x ipvs 正式 GA，性能相对 iptables 有很大的提升）。
 
 ## 附加组件和依赖
 
 * [DNS](https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/dns) 提供集群内部解析和服务发现
-* [Ingress controller](https://github.com/kubernetes/ingress-nginx) 提供内部服务七层代理到外部
+* [Ingress controller](https://github.com/kubernetes/ingress-nginx) 提供内部服务七层代理到外部
 * [Kubernetes Metrics Server](https://github.com/kubernetes-incubator/metrics-server) 替换 Heapster 监控
 * [Dashboard](https://github.com/kubernetes/dashboard/) Kubernetes GUI
 
