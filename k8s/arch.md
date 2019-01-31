@@ -50,6 +50,10 @@ Kubelet 决定 Pod 是否可以运行在给定的节点上的最终决策者，�
 
 service 的抽象提供了一种在公共访问策略（如负载均衡）下对 pod 进行分组的方式。Service 通过创建 VIP，提供给客户端访问，再透明代理到 Service 中的 pods。每个节点都运行一个 kube-proxy 进程，该进程维护一套 iptables 规则，以捕获对服务 IPs 的访问，并重定向到正确的后端（1.12.x ipvs 正式 GA，性能相对 iptables 有很大的提升）。
 
+附上华为关于 Service 性能这块的介绍，主要是对比 ipvs 和 iptables：
+
+* [华为云在 K8S 大规模场景下的 Service 性能优化实践](https://zhuanlan.zhihu.com/p/37230013)
+
 ## 附加组件和依赖
 
 * [DNS](https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/dns) 提供集群内部解析和服务发现
@@ -58,3 +62,12 @@ service 的抽象提供了一种在公共访问策略（如负载均衡）下对
 * [Dashboard](https://github.com/kubernetes/dashboard/) Kubernetes GUI
 
 以及包括 [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics) 等其它 [add-ons ](https://github.com/kubernetes/kubernetes/tree/master/cluster/addons) 组件。
+
+### 一些基于 Kubernetes 的开源平台
+
+Kubernetes GUI 从体验上来说还是相对比较差的，可以使用一些开源的替代版本：
+
+* [Multi-Cluster Kubernetes Management -- Rancher](https://rancher.com/)
+    * Rancher 团队是做的比较早的，现在已经发布 2.x 版本了，支持中文，具体可以参考文档 [Rancher 2.0-CN](https://www.cnrancher.com/docs/rancher/v2.x/cn/overview/)
+* [Web UI for Kubernetes multi-clusters -- Wayne](https://github.com/Qihoo360/wayne)
+    * 360 开源的 Kubernetes 多集群 Web UI
