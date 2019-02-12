@@ -20,6 +20,7 @@
         * [Deployments](k8s/concepts-deployments.md)
         * [StatefulSets](k8s/concepts-statefulsets.md)
     * 存储
+        * [Volumes](k8s/concepts-volumes.md)
         * [Persistent Volumes](k8s/concepts-pv.md)
     * [集群构建](k8s/install.md)
         * [从头开始构建 Kubernetes 集群](k8s/install-manual.md)

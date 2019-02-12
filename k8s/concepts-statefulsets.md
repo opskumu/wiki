@@ -2,6 +2,8 @@
 
 * [StatefulSets 官方说明](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#deployment-and-scaling-guarantees)
 
+---
+
 一个标准的 StatefulSet 由 `Pod template` 和 `Volume claim template` 组成：
 
 ![](images/StatefulSet.png)
