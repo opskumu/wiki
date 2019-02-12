@@ -29,7 +29,7 @@
     * 集群组件
         * [Kubelet](k8s/kubelet.md)
     * 网络方案
-        * [Calico BGP 网络](k8s/calico.md)
+        * [Calico BGP 网络（v2.6.x）](k8s/calico.md)
         * [Kubelet CNI 源码解析](k8s/src-kubelet-cni.md)
     * 相关译文
         * [Google 大规模集群管理器 Borg](k8s/borg.md)
