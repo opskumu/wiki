@@ -28,7 +28,7 @@ Kubernetes 卷具有明确的生命周期，和伴随它的 Pod 相同。因此�
 
 `configMap` 资源提供了一种将配置数据注入 Pod 的方法，存储在 `configMap` 对象中的数据可以在 `configMap` 类型的卷中引用，然后被 Pod 中运行的容器化应用程序使用。通过 `configMap` 可以动态的修改指定的容器中的配置，从而达到在不同环境使用同一镜像不同配置的目的，因此这是一个非常常用的一个卷类型。
 
-> **[warning] 标注**  
+> **[info] 标注**  
 > 早期 `configMap` 只能以目录的形式覆盖对应容器中的配置目录，针对单个文件是无法覆盖的，Kubernetes [CHANGELOG-1.3](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.3.md) 开始支持 subPath 特性 [Add subPath to mount a child dir or file of a volumeMount](https://github.com/kubernetes/kubernetes/pull/22575)，通过 [subPath](https://kubernetes.io/docs/concepts/storage/volumes/#using-subpath) 可以挂载子目录或者文件，如此便可以在目标容器配置目录有多个文件的时候只覆盖指定的配置，而不是直接目录覆盖。
 > 不过，要注意的是，subPath 挂载会导致 configMap 更新之后容器中的文件不会实时同步更新。
 
@@ -36,7 +36,7 @@ Kubernetes 卷具有明确的生命周期，和伴随它的 Pod 相同。因此�
 
 `emptyDir` 卷在 Pod 关联到节点后初始化创建，Pod 运行在该节点多久就存在多久。一般用于存放临时文件。
 
-> **[warning] 标注**  
+> **[info] 标注**  
 > 容器崩溃不会从节点中删除 Pod，因此 `emptyDir` 卷中的数据在容器崩溃中是安全的。
 
 默认情况下，`emptyDir` 卷存储支持节点上的任何介质，可能是磁盘、SSD 或者网络存储，这取决于你的环境。不过你可以通过 `emptyDir.medium` 字段来设置为 `Memory`，用来告诉 Kubernetes 挂载 tmpfs。虽然 tmpfs 速度很快，不同于磁盘，tmpfs 会在节点重启后数据被清除，而且使用的内存受限于容器的内存限制。
@@ -64,7 +64,7 @@ Kubernetes 卷具有明确的生命周期，和伴随它的 Pod 相同。因此�
 
 默认在底层宿主上创建的文件或目录只能由 root 写入，因此需要以 root 权限运行进程或者在宿主上修改文件权限以支持写入 `hostPath` 卷。
 
-> **[warning] 标注**  
+> **[info] 标注**  
 > 也可以通过 Pod `securityContext.fsGroup` 来修改卷的属组。
 
 示例：
