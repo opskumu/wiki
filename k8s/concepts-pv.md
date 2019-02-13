@@ -2,6 +2,8 @@
 
 * [Persistent Volumes 官方说明](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
 
+---
+
 ## 介绍
 
 为管理存储，K8s 引入了两个新的资源对象：`PersistentVolume` 和 `PersistentVolumeClaim`。
