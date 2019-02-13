@@ -1,5 +1,8 @@
 # 从头开始构建 Kubernetes 集群
 
+> **[info] 标注**  
+> 此文档主要帮助新手用户了解整体的 Kubernetes 运维部署体系，实际生产环境还要考虑 Master 高可用、RBAC 等功能特性，建议参考 [kubeadm](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/) 或者 [kubespary](https://github.com/kubernetes-sigs/kubespray) 进行定制
+
 ## 系统信息
 
 | 节点 | 地址 | 用途 |
