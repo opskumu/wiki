@@ -16,14 +16,13 @@
 * Kubernetes
     * [架构概览](k8s/arch.md)
     * [基础术语](k8s/concepts.md)
+    * [集群构建](k8s/install.md)
+        * [从头开始构建 Kubernetes 集群](k8s/install-manual.md)
     * [工作负载](k8s/workload.md)
         * [Deployments](k8s/concepts-deployments.md)
         * [StatefulSets](k8s/concepts-statefulsets.md)
-    * 存储
         * [Volumes](k8s/concepts-volumes.md)
         * [Persistent Volumes](k8s/concepts-pv.md)
-    * [集群构建](k8s/install.md)
-        * [从头开始构建 Kubernetes 集群](k8s/install-manual.md)
     * 集群调度
         * [亲和性和反亲和性](k8s/assigning-pods-to-nodes.md)
     * 集群组件
