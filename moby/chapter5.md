@@ -8,13 +8,15 @@
 
 `docker build` 命令构建镜像需要一个 `Dockerfile` 和一个构建环境（context）。
 
-> **[info] 标注**  
-> 关于构建环境可以是文件系统的具体目录路径也可以是一个 URL，其中 URL 需要是一个 Git 仓库地址。
+{% hint style="info" %}
+关于构建环境可以是文件系统的具体目录路径也可以是一个 URL，其中 URL 需要是一个 Git 仓库地址。
+{% endhint %}
 
 镜像构建环境是一个递归处理的过程，针对目录来说，则遍历目录下的所有子目录，而 URL 则囊括 Git 仓库本身和它的子模块。镜像构建是通过 Docker daemon 来实现的，而不是客户端。构建开始时，构建进程会把构建环境整个发送给 Docker daemon。假如你的环境是本地文件系统的一个目录，那么尽可能的只包括 `Dockerfile` 和镜像构建所需要的文件。
 
-> **[warning] 警告**  
-> 不要使用 root 目录 `/` 作为构建环境，否则会发送当前整个文件系统给 Docker daemon。
+{% hint style="warning" %}
+不要使用 root 目录 `/` 作为构建环境，否则会发送当前整个文件系统给 Docker daemon。
+{% endhint %}
 
 为了提升构建性能，可以通过在当前构建环境根目录下创建 `.dockerignore` 文件来排除一些不必要的文件和目录（类似 `.gitignore`）。
 
@@ -41,8 +43,9 @@ $ docker build -t shykes/myapp:1.0.2 -t shykes/myapp:latest .
 
 构建缓存只能用于拥有同一个本地父链（local parent chain）的镜像。意思就是说这些镜像由之前历史构建创建的或者整条镜像链都是由 docker 加载的。如果希望使用特定镜像的构建缓存，则可以使用 `--cache-from` 选项指定，`--cache-from` 不需要拥有一个父链并且可以从其它镜像仓库获取。
 
-> **[info] 标注**  
-> 这段描述的有些晦涩，另外 `--cache-from` 实际过程中应该使用的很少，笔者基本没有这样的应用场景。
+{% hint style="info" %}
+这段描述的有些晦涩，另外 `--cache-from` 实际过程中应该使用的很少，笔者基本没有这样的应用场景。
+{% endhint %}
 
 ### 格式
 
@@ -53,8 +56,9 @@ $ docker build -t shykes/myapp:1.0.2 -t shykes/myapp:latest .
 INSTRUCTION arguments
 ```
 
-> **[info] 标注**  
-> `Dockerfile` 指令并不区分大小写，但是为了区分，建议指令统一采用 `大写`
+{% hint style="info" %}
+`Dockerfile` 指令并不区分大小写，但是为了区分，建议指令统一采用 `大写`
+{% endhint %}
 
 Docker 运行 `Dockerfile` 指令是顺序执行的，一个 `Dockerfile` 文件必须以 `FROM` 指令开始。`FROM` 指令指定了构建镜像的基础镜像。
 
@@ -136,9 +140,9 @@ temp?
 └── temp            # 不匹配规则被保留
     └── t.md        # 不匹配规则被保留
 ```
-
-> **[info] 标注**  
-> 匹配是有顺序的，如果前后的规则有重叠或者冲突，则后面的规则生效。如果 `!README.md` 在 `*.md` 之前，则以 `*.md` 为规则，`README.md` 依然会被排除。
+{% hint style="info" %}
+匹配是有顺序的，如果前后的规则有重叠或者冲突，则后面的规则生效。如果 `!README.md` 在 `*.md` 之前，则以 `*.md` 为规则，`README.md` 依然会被排除。
+{% endhint %}
 
 可以通过 `.dockerignore` 来排除 `Dockerfile` 和 `.dockerignore` 文件。但是这些文件依然会发送到 Docker daemon。不过，`ADD` 和 `COPY` 指令将不会拷贝它们。
 
@@ -161,8 +165,9 @@ FROM <image>[:<tag>]
 
 `RUN` 指令会在当前镜像的新层上执行命令并提交执结果，后续 `Dockerfile` 的指令操作则基于此最新提交的镜像。分层 `RUN` 指令提交方式是 Docker 的核心理念，首先提交的成本比较低，并且容器可以基于任何历史镜像点创建，好比源码版本控制（`git checkout`）。
 
-> **[info] 标注**  
-> `exec` 格式会被解析成一个 JSON 数组，所以必须使用 __双引号__ ，而非单引号。`exec` 格式执行命令不会调用 command shell，所以也不会继承环境变量。
+{% hint style="info" %}
+`exec` 格式会被解析成一个 JSON 数组，所以必须使用 __双引号__ ，而非单引号。`exec` 格式执行命令不会调用 command shell，所以也不会继承环境变量。
+{% endhint %}
 
 ```
 RUN ["echo", "$HOME"]
@@ -195,8 +200,9 @@ RUN yum install -y rsync && \
 
 `Dockerfile` 只能有一个 `CMD` 指令，如果有多个，则只有最后一个 `CMD` 会生效。`CMD` 的主要作用是用于容器启动的默认执行命令或者作为 `ENTRYPOINT` 指令的参数。
 
-> **[info] 标注**  
-> 同 `RUN` 指令的 `exec` 格式，`CMD` 指令的 `exec` 格式也会被解析成一个 JSON 数组，所以必须使用 __双引号__ ，而非单引号。同样 `exec` 格式执行命令不会调用 command shell，所以也不会继承环境变量。
+{% hint style="info" %}
+同 `RUN` 指令的 `exec` 格式，`CMD` 指令的 `exec` 格式也会被解析成一个 JSON 数组，所以必须使用 __双引号__ ，而非单引号。同样 `exec` 格式执行命令不会调用 command shell，所以也不会继承环境变量。
+{% endhint %}
 
 简单来说，不同于 `RUN` 只会在构建就像时执行，`CMD` 是在容器启动时才会执行里面的命令，并且在 `Dockerfile` 中只能有一个 `CMD`。
 
@@ -238,8 +244,9 @@ ENV <key>=<value> ...           # 这种格式可以定义对个环境变量
 
 `ENV` 指令通过键值对定义环境变量。`Dockerfile` 中定义的环境变量，可以在执行 `docker run` 的时候通过 `-e` 选项替换值。
 
-> **[info] 标注**  
-> 如果需要针对一个单独的命令添加环境变量，则可以通过 `RUN <key>=<value> 设置`。
+{% hint style="info" %}
+如果需要针对一个单独的命令添加环境变量，则可以通过 `RUN <key>=<value> 设置`。
+{% endhint %}
 
 #### ADD
 
@@ -255,8 +262,9 @@ ADD hom* /mydir/        # 添加所有以 hom 开头的文件
 ADD hom?.txt /mydir/    # ? 用于代表单个字符，如 home.txt
 ```
 
-> **[info] 标注**  
-> `<src>` 根目录不是以系统 `/` 开始的，而是当前构建环境的根目录，如构建环境目录为 `~/docker/app/`，则 `ADD` 拷贝本地文件目录只能局限于 `~/docker/app/` 下的子文件或者子目录。
+{% hint style="info" %}
+`<src>` 根目录不是以系统 `/` 开始的，而是当前构建环境的根目录，如构建环境目录为 `~/docker/app/`，则 `ADD` 拷贝本地文件目录只能局限于 `~/docker/app/` 下的子文件或者子目录。
+{% endhint %}
 
 `<dest>` 是一个绝对路径，或者基于 `WORKDIR` 的绝对路径：
 
@@ -265,13 +273,15 @@ ADD test relativeDir/          # 添加 test 到 `WORKDIR`/relativeDir/
 ADD test /absoluteDir/         # 添加 test 到 /absoluteDir/
 ```
 
-> **[info] 标注**  
-> 通过 `ADD` 添加的文件和目录在镜像文件系统中 UID 和 GID 都是 0。如果添加的是一个目录，则只会把目录下的内容（包括文件系统元数据）传输到镜像 `<dest>` 下，目录本身不拷贝。如果 `<dest>` 中目录不存在，则会自动层级创建相应目录。
+{% hint style="info" %}
+通过 `ADD` 添加的文件和目录在镜像文件系统中 UID 和 GID 都是 0。如果添加的是一个目录，则只会把目录下的内容（包括文件系统元数据）传输到镜像 `<dest>` 下，目录本身不拷贝。如果 `<dest>` 中目录不存在，则会自动层级创建相应目录。
+{% endhint %}
 
 如果 `<src>` 是一个本地 tar 包（tar.gz、tar.xz、tar.bz 都行），添加到镜像中会自动解压成一个文件（解压同 `tar -x`），远程文件不支持。
 
-> **[info] 标注**  
-> 如果 `<src>` 有多个资源指定，那么 `<dest>` 必须以斜线 `/` 结尾。
+{% hint style="info" %}
+如果 `<src>` 有多个资源指定，那么 `<dest>` 必须以斜线 `/` 结尾。
+{% endhint %}
 
 #### COPY
 
@@ -302,8 +312,9 @@ CMD ["param1", "param2"]      # CMD 作为命令选项
 docker run -it --rm --entrypoint=bash nginx     # 运行 nginx 容器，并且以 bash 命令启动
 ```
 
-> **[info] 标注**  
-> 不推荐使用 shell 格式，因为通过 shell 格式之后，命令会以 `/bin/sh -c` 的一个子命令启动，并且不会传递任何信号。意思就是说，执行命令在容器中并不会以 `PID 1` 运行，并且不会接收 UNIX 信号，那么容器在 `docker stop` 时就不能接收到 `SIGTERM` 完成正常的退出。
+{% hint style="info" %}
+不推荐使用 shell 格式，因为通过 shell 格式之后，命令会以 `/bin/sh -c` 的一个子命令启动，并且不会传递任何信号。意思就是说，执行命令在容器中并不会以 `PID 1` 运行，并且不会接收 UNIX 信号，那么容器在 `docker stop` 时就不能接收到 `SIGTERM` 完成正常的退出。
+{% endhint %}
 
 如果你需要给一个执行程序写一个启动脚本，你必须确保最终执行程序能通过 `exec` 和 `gosu` 命令收到 Unix 信号，以完成程序优雅的退出：
 
@@ -348,8 +359,9 @@ echo "stopping apache"
 echo "exited $0"
 ```
 
-> **[info] 标注**  
-> `ENTRYPOINT` 可以通过 `--entrypoint` 覆盖，不过只能是以 exec  格式。exec 格式会被解析成一个 JSON 数组，所以必须是 `双引号`。
+{% hint style="info" %}
+`ENTRYPOINT` 可以通过 `--entrypoint` 覆盖，不过只能是以 exec  格式。exec 格式会被解析成一个 JSON 数组，所以必须是 `双引号`。
+{% endhint %}
 
 `Dockerfile` 中至少要指定 `CMD` 或者 `ENTRYPOINT` 中的一个。关于 `CMD` 和 `ENTRYPOINT` 的更多，建议参考官方文档 [Understand how CMD and ENTRYPOINT interact](https://github.com/docker/docker-ce/blob/master/components/cli/docs/reference/builder.md#understand-how-cmd-and-entrypoint-interact)
 
@@ -379,8 +391,9 @@ WORKDIR /path/to/workdir
 
 `WORKDIR` 用于设置工作目录，`RUN`、`CMD`、`ENTRYPOINT`、`COPY` 和 `ADD` 指令将会遵从这一规则。
 
-> **[info] 标注**  
-> 如果设置的 `WORKDIR` 不存在，则会自动创建
+{% hint style="info" %}
+如果设置的 `WORKDIR` 不存在，则会自动创建
+{% endhint %}
 
 `Dockerfile` 还有一些高级技巧和黑魔法，比如可以通过 `STOPSIGNAL signal` 设置 system call 信号用以传送给容器退出。这里不做过多的介绍，更多参见 [Dockerfile reference](https://github.com/docker/docker-ce/blob/master/components/cli/docs/reference/builder.md)
 
@@ -424,8 +437,9 @@ RUN apt-get update && apt-get install -y \
 * 大多数情况，只需要将 `Dockerfile` 中的指令与子镜像进行比较就够了。针对 `COPY` 和 `ADD` 指令则有些不同，除了比较指令是否相同，还需要校验比较镜像中的文件内容（忽略修改时间和访问时间）。如果文件中有任何内容改变，则缓存失效。
 * `RUN apt-get -y update` 这类命令，则不会匹配缓存。
 
-> **[info] 标注**  
-> 为了有效地利用缓存，你需要保持你的 Dockerfile 一致，并且尽量在末尾修改。
+{% hint style="info" %}
+为了有效地利用缓存，你需要保持你的 Dockerfile 一致，并且尽量在末尾修改。
+{% endhint %}
 
 ### 指令最佳实践
 
@@ -454,8 +468,9 @@ RUN apt-get update && apt-get install -y \
  && rm -rf /var/lib/apt/lists/*
 ```
 
-> **[info] 标注**  
-> `apt-get update` 要和 `apt-get install` 指令要同时使用，否则单独使用 `apt-get update` 会导致缓存问题（直接使用缓存而不执行该条命令）并且导致 `apt-get install 安装命令失败`。
+{% hint style="info" %}
+`apt-get update` 要和 `apt-get install` 指令要同时使用，否则单独使用 `apt-get update` 会导致缓存问题（直接使用缓存而不执行该条命令）并且导致 `apt-get install 安装命令失败`。
+{% endhint %}
 
 __使用管道__
 
@@ -471,8 +486,10 @@ Docker 执行这些命令的时候使用的是 `/bin/sh -c`，最后执行的命
 RUN set -o pipefail && wget -O - https://some.site | wc -l > /number
 ```
 
-> **[info] 标注**  
-> 不是所有的 shell 都支持 `-o pipefail` 选项的（比如 dash）。Debian 基础类的镜像默认 shell 是 dash，可以通过如下方式来支持 `pipefail`：
+{% hint style="info" %}
+不是所有的 shell 都支持 `-o pipefail` 选项的（比如 dash）。Debian 基础类的镜像默认 shell 是 dash，可以通过如下方式来支持 `pipefail`：
+{% endhint %}
+
 >```
 >RUN ["/bin/bash", "-c", "set -o pipefail && wget -O - https://some.site | wc -l > /number"]
 >```

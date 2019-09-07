@@ -8,12 +8,12 @@
 
 下载 [Get Docker for Mac [stable]](https://download.docker.com/mac/stable/Docker.dmg) dmg 文件，双击即可安装，安装之后点击运行 Docker。因为国内下载镜像比较慢的原因，所以需要额外配置一下国内的 Registry mirror 用以加速镜像下载：
 
-<center><img src="images/mac-docker-config.png" width="500" height="600" alt="mac docker config" /></center>
+![](images/mac-docker-config.png)
 
 目前国内有很多家企业提供公共的镜像加速服务：
 
 * 网易云镜像加速 [http://hub-mirror.c.163.com/](http://hub-mirror.c.163.com/)
-* Docker 中国官方镜像加速 [https://registry.docker-cn.com](https://registry.docker-cn.com)
+* ~Docker 中国官方镜像加速[https://registry.docker-cn.com](https://registry.docker-cn.com)~ 已失效
 
 除以上两个公开的加速器外，还有阿里云、Daocloud 等厂商也提供加速服务，不过需要通过注册帐号登录才可以获取专有的镜像加速服务地址。
 
@@ -25,20 +25,20 @@ macOS 上运行 Docker，需要注意的是删除镜像占用空间也不会释�
 
 关于 Docker 社区版在 CentOS 上的安装，官网提供了教程 [Get Docker CE for CentOS](https://docs.docker.com/engine/installation/linux/docker-ce/centos/)，最新版本的 Docker CE 本文暂时不做介绍，以 CentOS 源提供版本为主。
 
-```
+```bash
 # cat /etc/centos-release
 CentOS Linux release 7.3.1611 (Core)
 ```
 
 Docker 已收录在 `CentOS-Extras` 软件库内，可以直接通过如下方式安装
 
-```
+```bash
 yum install -y docker
 ```
 
 当前通过 CentOS 源默认安装版本为 `1.12.6`。`1.12.6` 默认配置如下：
 
-```
+```bash
 # grep -vE '^$|^#' /etc/sysconfig/docker
 OPTIONS='--selinux-enabled --log-driver=journald --signature-verification=false'
 if [ -z "${DOCKER_CERT_PATH}" ]; then
@@ -48,7 +48,7 @@ fi
 
 默认源除了提供 `1.12.6` 以外，还提供一个 `docker-latest` 的版本，该版本为 `1.13.1`，可以通过以下方式安装：
 
-```
+```bash
 yum install -y docker-latest
 ```
 
@@ -56,7 +56,7 @@ yum install -y docker-latest
 
 如果要安装一个较新的版本，还可以通过加入以下软件库实现：
 
-```
+```bash
 [virt7-container-common-candidate]
 name=virt7-container-common-candidate
 baseurl=https://cbs.centos.org/repos/virt7-container-common-candidate/x86_64/os/
@@ -64,7 +64,7 @@ enabled=1
 gpgcheck=0
 ```
 
-```
+```bash
 yum install oci-systemd-hook oci-register-machine -y
 yum install -y docker --disablerepo=extras
 systemctl start docker
