@@ -120,8 +120,9 @@ Usage of ./kubelet:
 | --system-cgroups / | Optional absolute name of cgroups in which to place all non-kernel processes that are not already inside a cgroup under /. Empty for no container. Rolling back the flag requires a reboot. |
 | --system-reserved-cgroup string | Absolute name of the top level cgroup that is used to manage non-kubernetes components for which compute resources were reserved via '--system-reserved' flag. Ex. '/system-reserved'.  默认 `''` |
 
-> **[info] 标注**  
-> cgroup 相关选项有些笔者没有深入相关调研，建议使用默认值即可
+{% hint style="info" %}
+cgroup 相关选项有些笔者没有深入相关调研，建议使用默认值即可
+{% endhint %}
 
 #### event 配置项
 
@@ -132,8 +133,9 @@ Usage of ./kubelet:
 | --event-storage-age-limit string | Max length of time for which to store events (per type). Value is a comma separated list of key values, where the keys are event types (e.g.: creation, oom) or "default" and the value is a duration. Default is applied to all non-specified event types (default "default=0") |
 | --event-storage-event-limit string | Max number of events to store (per type). Value is a comma separated list of key values, where the keys are event types (e.g.: creation, oom) or "default" and the value is an integer. Default is applied to all non-specified event types (default "default=0") |
 
-> **[info] 标注**  
-> event 配置项笔者也没有进行相关设置，建议使用默认值即可
+{% hint style="info" %}
+event 配置项笔者也没有进行相关设置，建议使用默认值即可
+{% endhint %}
 
 #### Pod `eviction` 配置项
 

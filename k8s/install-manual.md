@@ -1,7 +1,8 @@
 # 从头开始构建 Kubernetes 集群
 
-> **[info] 标注**  
-> 此文档主要帮助新手用户了解整体的 Kubernetes 运维部署体系，实际生产环境还要考虑 Master 高可用、RBAC 等功能特性，建议参考 [kubeadm](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/) 或者 [kubespary](https://github.com/kubernetes-sigs/kubespray) 进行定制
+{% hint style="info" %}
+此文档主要帮助新手用户了解整体的 Kubernetes 运维部署体系，实际生产环境还要考虑 Master 高可用、RBAC 等功能特性，建议参考 [kubeadm](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/) 或者 [kubespary](https://github.com/kubernetes-sigs/kubespray) 进行定制
+{% endhint %}
 
 ## 系统信息
 
@@ -475,8 +476,9 @@ fi
 }
 ```
 
-> **[info] 标注**  
-> 如果有私有镜像，那么需要添加 `insecure-registries` 字段到配置中去，如 `"insecure-registries": [ "<私有 registry repo 地址>" ]`
+{% hint style="info" %}
+如果有私有镜像，那么需要添加 `insecure-registries` 字段到配置中去，如 `"insecure-registries": [ "<私有 registry repo 地址>" ]`
+{% endhint %}
 
 ## Flannel
 
@@ -523,8 +525,9 @@ FLANNEL_OPTIONS="-etcd-cafile=/etc/flannel/ssl/ca.pem -etcd-certfile=/etc/flanne
 ETCDCTL_ENDPOINT=https://192.168.150.129:2379,https://192.168.150.130:2379,https://192.168.150.131:2379 etcdctl --cert-file=/etc/flannel/ssl/client.pem --key-file=/etc/flannel/ssl/client-key.pem  --ca-file=/etc/flannel/ssl/ca.pem mk /atomic.io/network/config '{"Network":"172.17.0.0/16", "SubnetLen": 25,"Backend": {"Type": "host-gw"}}'
 ```
 
-> **[info] 标注**  
-> etcd 中写入配置，只需要选择一个节点执行一次即可。
+{% hint style="info" %}
+etcd 中写入配置，只需要选择一个节点执行一次即可。
+{% endhint %}
 
 Flannel 有多种类型选择，常见有 udp、vxlan 以及本例中使用的 host-gw，更多的可以参见 Flannel 官方文档 [Flannel Backends](https://github.com/coreos/flannel/blob/master/Documentation/backends.md)。
 
@@ -583,8 +586,9 @@ PING 172.17.37.1 (172.17.37.1) 56(84) bytes of data.
 rtt min/avg/max/mdev = 1.846/1.846/1.846/0.000 ms
 ```
 
-> **[info] 标注**  
-> 当前 yum 安装的 flannel 版本为 flannel-0.7.1-2.el7.x86_64，结合 yum 安装版本的 K8s 1.8.1 出现了问题，节点之间可以互相 ping 通，但是针对 pod 只能和当前节点的 pod 通信，跨节点不可以，最后升级 flannel 到官方 0.9.1 版本解决。
+{% hint style="info" %}
+当前 yum 安装的 flannel 版本为 flannel-0.7.1-2.el7.x86_64，结合 yum 安装版本的 K8s 1.8.1 出现了问题，节点之间可以互相 ping 通，但是针对 pod 只能和当前节点的 pod 通信，跨节点不可以，最后升级 flannel 到官方 0.9.1 版本解决。
+{% endhint %}
 
 ## Kubernetes Master
 
@@ -631,8 +635,9 @@ cfssl print-defaults csr > api-server.json
 }
 ```
 
-> **[info] 标注**  
-> 此处加入的 10.254.0.1，是 `Kubernetes` 集群创建后默认创建的内部 apiserver 通信地址，根据实际情况修改，这里采用的是默认值。
+{% hint style="info" %}
+此处加入的 10.254.0.1，是 `Kubernetes` 集群创建后默认创建的内部 apiserver 通信地址，根据实际情况修改，这里采用的是默认值。
+{% endhint %}
 
 
 ```
@@ -843,8 +848,9 @@ KUBELET_HOSTNAME="--hostname-override=192.168.150.130"
 KUBELET_ARGS="--cgroup-driver=systemd --fail-swap-on=false --image-gc-high-threshold=95 --image-gc-low-threshold=80 --serialize-image-pulls=false --max-pods=30 --container-runtime=docker --cloud-provider=''"
 ```
 
-> **[warning] 标注**  
-> 因为 `GFW` 的原因，默认的 pause 镜像 `gcr.io/google_containers/pause-amd64` 可能会被墙，因此建议下载该镜像上传到私有仓库中，通过选项 `--pod-infra-container-image=<私有 registry repo 地址>/google_containers/pause-amd64:3.0` 加入到配置 `KUBELET_ARGS` 替换默认值。
+{% hint style="warn" %}
+因为 `GFW` 的原因，默认的 pause 镜像 `gcr.io/google_containers/pause-amd64` 可能会被墙，因此建议下载该镜像上传到私有仓库中，通过选项 `--pod-infra-container-image=<私有 registry repo 地址>/google_containers/pause-amd64:3.0` 加入到配置 `KUBELET_ARGS` 替换默认值。
+{% endhint %}
 
 修改 kube-proxy 配置 `/etc/kubernetes/proxy`：
 
@@ -899,8 +905,9 @@ busybox   1/1       Running   1          4m        172.17.33.2   192.168.150.131
 
 修改官方 kubedns yaml 文件 [kube-dns.yaml.base](https://github.com/kubernetes/kubernetes/blob/master/cluster/addons/dns/kube-dns.yaml.base)，替换 `__PILLAR__DNS__SERVER__` 和 `__PILLAR__DNS__DOMAIN__` 为实际配置，本例中分别替换为 `10.254.0.10` 和 `cluster.local`。
 
-> **[info] 标注**  
-> 同之前的镜像一样，kubedns 默认的镜像源都是 `gcr.io`，因为被墙的原因，建议通过某些不可描述的手段下载之后上传到自己的内部私有镜像仓库中。
+{% hint style="info" %}
+同之前的镜像一样，kubedns 默认的镜像源都是 `gcr.io`，因为被墙的原因，建议通过某些不可描述的手段下载之后上传到自己的内部私有镜像仓库中。
+{% endhint %}
 
 ```
 root@master ~]# kubectl create -f kube-dns.yaml
@@ -971,8 +978,9 @@ kubernetes.default.svc.cluster.local. 30 IN A 10.254.0.1
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 ```
 
-> **[info] 标注**  
-> 同前面的问题，当中使用的镜像可能被墙，可以提前下载好 push 到内部私有镜像仓库即可。
+{% hint style="info" %}
+同前面的问题，当中使用的镜像可能被墙，可以提前下载好 push 到内部私有镜像仓库即可。
+{% endhint %}
 
 开启代理访问：
 
@@ -981,8 +989,9 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/s
 Starting to serve on 192.168.150.129:8001
 ```
 
-> **[warning] 标注**  
-> 注意添加 `--accept-hosts='^*$'` 选项，否则会显示页面 `<h3>Unauthorized</h3>` 。
+{% hint style="warn" %}
+注意添加 `--accept-hosts='^*$'` 选项，否则会显示页面 `<h3>Unauthorized</h3>` 。
+{% endhint %}
 
 浏览器访问如下地址：
 
