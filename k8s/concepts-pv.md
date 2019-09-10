@@ -32,7 +32,7 @@
 
 一个 PVC 可以通过 `storageClassName` 字段指定 [StorageClass](https://kubernetes.io/docs/concepts/storage/storage-classes/) 的名称来请求特定 class。只有所请求 class 的 PVs 才能绑定到请求指定相同 class 的 PVCs。
 
-{% hint style="warn" %}
+{% hint style="warning" %}
 早期版本，使用 annotation `volume.beta.kubernetes.io/storage-class` 替代 `storageClassName`。当前 annotation 依然生效，不过在后续版本会被废弃。
 {% endhint %}
 
@@ -105,6 +105,6 @@ __回收__
 
 使用 `Recycle` 回收策略，会自动清理数据并使其可以被其它新的声明使用。（当前只有 NFS 和 HostPath 支持回收）
 
-{% hint style="warn" %}
+{% hint style="warning" %}
 `Recycle` 回收策略已经被废弃，推荐使用动态供应代替（即 `StorageClass`）
 {% endhint %}

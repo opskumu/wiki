@@ -848,7 +848,7 @@ KUBELET_HOSTNAME="--hostname-override=192.168.150.130"
 KUBELET_ARGS="--cgroup-driver=systemd --fail-swap-on=false --image-gc-high-threshold=95 --image-gc-low-threshold=80 --serialize-image-pulls=false --max-pods=30 --container-runtime=docker --cloud-provider=''"
 ```
 
-{% hint style="warn" %}
+{% hint style="warning" %}
 因为 `GFW` 的原因，默认的 pause 镜像 `gcr.io/google_containers/pause-amd64` 可能会被墙，因此建议下载该镜像上传到私有仓库中，通过选项 `--pod-infra-container-image=<私有 registry repo 地址>/google_containers/pause-amd64:3.0` 加入到配置 `KUBELET_ARGS` 替换默认值。
 {% endhint %}
 
@@ -989,7 +989,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/s
 Starting to serve on 192.168.150.129:8001
 ```
 
-{% hint style="warn" %}
+{% hint style="warning" %}
 注意添加 `--accept-hosts='^*$'` 选项，否则会显示页面 `<h3>Unauthorized</h3>` 。
 {% endhint %}
 
