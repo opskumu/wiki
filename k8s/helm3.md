@@ -2,6 +2,8 @@
 
 ## Helm 架构
 
+![](https://developer.ibm.com/developer/blogs/kubernetes-helm-3/images/helm3-arch.png)
+
 ### HELM 的目的
 
 Helm 是一个管理 Kubernetes 包 charts 的工具。Helm 可以做以下事情：

@@ -31,5 +31,5 @@
     * [Calico BGP 网络（v2.6.x）](k8s/calico.md)
     * [Kubelet CNI 源码解析](k8s/src-kubelet-cni.md)
 * 相关译文
-    * [Helm 备忘](k8s/helm3.md)
+    * [Helm3 备忘](k8s/helm3.md)
     * [Google 大规模集群管理器 Borg](k8s/borg.md)
