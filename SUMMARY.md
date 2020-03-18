@@ -11,6 +11,8 @@
 * [配置说明](moby/chapter3.md)
 * [基础命令](moby/chapter4.md)
 * [镜像构建](moby/chapter5.md)
+* 镜像存储
+    * [Habor 安装和升级标注](moby/harbor.md)
 
 ## Kubernetes
 
