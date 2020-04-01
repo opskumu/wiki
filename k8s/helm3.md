@@ -2,7 +2,9 @@
 
 ## Helm 架构
 
-![](https://developer.ibm.com/developer/blogs/kubernetes-helm-3/images/helm3-arch.png)
+![](images/helm3-arch.png)
+
+> https://developer.ibm.com/technologies/containers/blogs/kubernetes-helm-3/
 
 ### HELM 的目的
 
