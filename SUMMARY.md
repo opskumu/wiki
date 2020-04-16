@@ -1,6 +1,6 @@
 # SUMMARY
 
-* [TODO](todo.md)
+* [文档 TODO](todo.md)
 
 ---
 
@@ -32,6 +32,9 @@
 * 网络方案
     * [Calico BGP 网络（v2.6.x）](k8s/calico.md)
     * [Kubelet CNI 源码解析](k8s/src-kubelet-cni.md)
-* 相关译文
-    * [Helm3 备忘](k8s/helm3.md)
-    * [Google 大规模集群管理器 Borg](k8s/borg.md)
+* [Helm](helm.md)
+    * [Helm 架构](k8s/helm-arch.md)
+    * [Helm 快速上手](k8s/helm-quickstart.md)
+    * [Helm 使用](k8s/helm-using.md)
+    * [Helm 命令](k8s/helm-command.md)
+* [Google 大规模集群管理器 Borg](k8s/borg.md)

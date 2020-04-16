@@ -13,12 +13,13 @@
 目前国内有很多家企业提供公共的镜像加速服务：
 
 * 网易云镜像加速 [http://hub-mirror.c.163.com/](http://hub-mirror.c.163.com/)
+* Azure 中国镜像加速 [https://dockerhub.azk8s.cn](https://dockerhub.azk8s.cn)
 * ~~Docker 中国官方镜像加速[https://registry.docker-cn.com](https://registry.docker-cn.com)~~  已失效
 
 除以上两个公开的加速器外，还有阿里云、Daocloud 等厂商也提供加速服务，不过需要通过注册帐号登录才可以获取专有的镜像加速服务地址。
 
 {% hint style="info" %}  
-macOS 上运行 Docker，需要注意的是删除镜像占用空间也不会释放，所以如果你的 Mac 磁盘不是很大的话，还是得悠着点用，具体的详情可以参见这个帖子 [Docker.qcow2 never shrinks - disk space usage leak in docker for mac](https://github.com/docker/for-mac/issues/371)  
+~macOS 上运行 Docker，需要注意的是删除镜像占用空间也不会释放，所以如果你的 Mac 磁盘不是很大的话，还是得悠着点用，具体的详情可以参见这个帖子 [Docker.qcow2 never shrinks - disk space usage leak in docker for mac](https://github.com/docker/for-mac/issues/371) ~ 这个问题新版本已解决
 {% endhint %}
 
 ## CentOS 7 Docker 安装
