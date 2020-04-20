@@ -36,6 +36,10 @@ Docker 镜像是 Docker 容器运行时的只读模板，每一个镜像由一�
 
 关于 Docker 的原理需要结合 Linux 底层的 `Cgroup` 和 `Namespace` 去理解。Docker 通过 `Cgroup` 实现针对每个容器的资源管理，如 CPU、Memory、IO 等，而通过 `Namespace` 让每个容器都拥有自己的命名空间，包括 PID、USER、UTS、MNT、NET、IPC 等。
 
+![](images/Linux-Arch.png)
+
+> 图自 https://msdnshared.blob.core.windows.net/media/2017/01/Linux-Arch.png
+
 如果需要深入理解相关知识，可以通过以下文章进一步学习：
 
 - [Docker 核心技术与实现原理](https://draveness.me/docker)
