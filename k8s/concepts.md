@@ -40,6 +40,14 @@ StatefulSets 同 Deployments/Replicas 类似，相较于 Deployments/ReplicaSets
 * 有序优雅的删除和销毁
 * 有序自动更新
 
+## DaemonSet
+
+DeamonSet 确保所有或者部分节点运行同一个 Pod，当节点添加之后，Pod 会自动在所在节点创建，节点移除则 Pod 会被自动清理。删除 DaemonSet 将会清除它创建的所有 Pod，一般用于以下场景：
+
+* 在每个节点运行集群存储 daemon，如 glusterfs、ceph 等
+* 在每个节点运行日志收集 daemon，如 fluentd、filebeat 等
+* 在每个节点运行节点监控 daemon，如 Prometheus Node Exporter、sysdig agent 等
+
 ## Jobs and CronJob
 
 Jobs 用于一次性的部署任务，可以是一个或者多个 Pods。Pods 成功执行后，Jobs 本身也完成了。如运行单元测试、一次性的脚本运行等等都可以使用 Jobs 来做。CronJob 顾名思义，则是定时执行的一种 Job。
