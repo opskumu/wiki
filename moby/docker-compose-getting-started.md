@@ -260,4 +260,4 @@ $ docker-compose stop
 $ docker-compose down --volumes
 ```
 
-至此，你已经了解了 Compose 工作的基本原理。
+至此，你已经基本了解了 Compose 工作机制。

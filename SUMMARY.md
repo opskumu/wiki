@@ -11,12 +11,12 @@
 * [配置说明](moby/chapter3.md)
 * [基础命令](moby/chapter4.md)
 * [镜像构建](moby/chapter5.md)
-* Docker Compose
-    * [Docker Compose 概览](moby/docker-compose-overview.md)
-    * [Docker Compose 安装](moby/docker-compose-install.md)
-    * [Docker Compose 入门](moby/docker-compose-getting-started.md)
 * 镜像存储
     * [Habor 安装和升级标注](moby/harbor.md)
+* Compose
+    * [Compose 概览](moby/docker-compose-overview.md)
+    * [Compose 安装](moby/docker-compose-install.md)
+    * [Compose 入门](moby/docker-compose-getting-started.md)
 
 ## Kubernetes
 
