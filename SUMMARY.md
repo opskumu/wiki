@@ -17,6 +17,7 @@
     * [Compose 概览](moby/docker-compose-overview.md)
     * [Compose 安装](moby/docker-compose-install.md)
     * [Compose 入门](moby/docker-compose-getting-started.md)
+    * [Compose 环境变量](moby/docker-compose-envs.md)
 
 ## Kubernetes
 

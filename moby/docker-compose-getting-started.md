@@ -1,5 +1,7 @@
 # Docker Compose 入门
 
++ [Get started with Docker Compose](https://docs.docker.com/compose/gettingstarted/)
+
 本页你构建一个简单的 Python web 应用通过 Docker Compose 运行。应用使用 Flask 框架以及使用 Redis 缓存。虽然示例使用 Python，但即使你不熟悉这些技术栈，你应该也可以理解。
 
 ## 准备
