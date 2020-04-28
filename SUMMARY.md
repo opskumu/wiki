@@ -18,6 +18,10 @@
     * [Compose 安装](moby/docker-compose-install.md)
     * [Compose 入门](moby/docker-compose-getting-started.md)
     * [Compose 环境变量](moby/docker-compose-envs.md)
+    * [Compose 服务扩展](moby/docker-compose-extends.md)
+    * [Compose 网络](moby/docker-compose-network.md)
+    * [Compose 生产实践](moby/docker-compose-production.md)
+    * [Compose 启动顺序](moby/docker-compose-startup-order.md)
 
 ## Kubernetes
 
