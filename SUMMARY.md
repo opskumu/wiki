@@ -21,7 +21,7 @@
     * [Compose 服务扩展](moby/docker-compose-extends.md)
     * [Compose 网络](moby/docker-compose-network.md)
     * [Compose 生产实践](moby/docker-compose-production.md)
-    * [Compose 启动顺序](moby/docker-compose-startup-order.md)
+    * [Compose 启动顺序控制](moby/docker-compose-startup-order.md)
 
 ## Kubernetes
 

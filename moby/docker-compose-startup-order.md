@@ -1,4 +1,6 @@
-# Compose 启动顺序
+# Compose 启动顺序控制
+
++ [Control startup order](https://docs.docker.com/compose/startup-order/)
 
 你可以通过 [depends_on](https://docs.docker.com/compose/compose-file/#depends_on) 选项控制服务启动顺序。Compose 总是按照依赖的顺序启动和停止容器，依赖包括 `depends_on`，`links`，`volumes_from` 以及 `network_mode: "service:..."`。
 

@@ -1,5 +1,7 @@
 # 生产中使用 Compose
 
++ [Use Compose in production](https://docs.docker.com/compose/production/)
+
 部署应用程序最简单的方法是在单个服务器上运行它，类似运行开发环境的方式。如果要扩容应用程序，则可以在 Swarm 集群上运行 Compose 应用。
 
 ## 修改 Compose 文件以适配生产

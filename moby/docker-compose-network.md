@@ -1,5 +1,7 @@
 # Compose 网络
 
++ [Networking in Compose](https://docs.docker.com/compose/networking/)
+
 默认 Compose 会给应用设置一个单独的网络。每个服务中的容器加入到默认的网络中，互相可以访问，并通过和容器名一样的主机名来服务发现。
 
 > 注意：应用网络命名依赖项目名，项目名称基于当前所在目录名。可以通过 `--project-name` 选项或者 `COMPOSE_PROJECT_NAME` 环境变量来覆盖。

@@ -1,5 +1,7 @@
 # Compose 服务扩展 
 
++ [Extend services in Compose](https://docs.docker.com/compose/extends/)
+
 Compose 支持两种共享通用配置的方法：
 
 + 1、通过 [使用多个 Compose 文件](https://docs.docker.com/compose/extends/#multiple-compose-files)
