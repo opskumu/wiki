@@ -196,3 +196,9 @@ DaemonSet 创建含有 `NoExecute` tolerations 的 pods 针对以下 taints 没�
 + `node.kubernetes.io/network-unavailable (host network only)`
 
 添加这些 tolerastions 确保向后兼容。你可以向 DaemonSets 中添加任意的 tolerations。
+
+## 扩展阅读
+
+![](images/taintsandtolerations.gif)
+
++ [Taints and tolerations, pod and node affinities demystified](https://banzaicloud.com/blog/k8s-taints-tolerations-affinities/)
