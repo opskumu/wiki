@@ -36,6 +36,7 @@
     * [Persistent Volumes](k8s/concepts-pv.md)
 * 集群调度
     * [亲和性和反亲和性](k8s/assigning-pods-to-nodes.md)
+    * [污点和容忍机制](k8s/taint-and-toleration.md)
 * 集群组件
     * [Kubelet](k8s/kubelet.md)
 * 网络方案
