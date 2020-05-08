@@ -4,7 +4,7 @@
 
 节点亲和性（affinity），是 pods 的一种属性，可以将 pods 调度到一类节点上去（作为优先选择或者一个硬性要求）。污点（Taints）则相反，它们允许节点排斥一类 pods。
 
-Taints 和 tolerations 一起工作以确保 pods 调度到不适合的节点上去。一个或者多个 taints 规则应用于节点，这标记节点不会接受任何没有容忍这些 taints 规则的 pods。Tolerations 规则应用于 pods，并且允许（非必须）这些 pods 调度到匹配 taints 规则的节点上。
+Taints 和 tolerations 一起工作以确保 pods 不调度到不适合的节点上去。一个或者多个 taints 规则应用于节点，这标记节点不会接受任何没有容忍这些 taints 规则的 pods。Tolerations 规则应用于 pods，并且允许（非强制）这些 pods 调度到匹配 taints 规则的节点上。
 
 ## 概念
 
@@ -84,7 +84,7 @@ spec:
 >   operator: "Exists"
 > ```
 
-上面的例子使用了 `effect` 为 `NoSchedule`。或者，你可以使用 `effect` 为 `PreferNoSchedule`。这是 `NoSchedule`  的 “优先选项” 或者 “软” 版本 -- 系统会尝试避免调度一个没有容忍 taint 的 pod 到该节点上，但是这不是必须的。第三种类型的 `effect` 是 `NoExecute`，后面再描述。
+上面的例子使用了 `effect` 为 `NoSchedule`。或者，你可以使用 `effect` 为 `PreferNoSchedule`。这是 `NoSchedule`  的 “优先选项” 或者 “软” 版本 -- 系统会尝试避免调度一个没有容忍 taint 的 pod 到该节点上，但是这不是强制的。第三种类型的 `effect` 是 `NoExecute`，后面再描述。
 
 你可以在同一个节点上设置多个 taints，也可以在同一个 pod 上设置多个 tolerations。Kubernetes 处理多个 taints 和 tolerations 的方式就像一个过滤器：遍历一个节点上的所有 taints，然后忽略 pod 上有匹配 toleration 的 taints。其它未忽略的 taints 会对 pod 产生作用。特别是：
 
@@ -116,7 +116,7 @@ tolerations:
 
 这个案例，pod 不会被调度到这个节点上，因为 pod 没有匹配第三个 taint。但是如果在节点添加 taint 的时 pod 已经运行了，那么 pod 会继续在该节点运行（简单说 `NoSchedule` 只在调度时生效）。
 
-正常情况下，如果一个 `effect` 是 `NoExecute` 的 taint 添加到节点，那些没有容忍此 taint 的将会被直接驱逐，然后那些容忍这个 taint 的 pods 将永远不会被驱逐。无论如何，一个 `effect` 是 `NoExecute` 的 toleration 可以指定一个可选的 `tolerationSeconds` 字段，以指示当节点 taint 被添加之后 pod 运行在节点的时长，如：
+正常情况下，如果一个 `effect` 是 `NoExecute` 的 taint 添加到节点，那些没有容忍此 taint 的将会被直接驱逐，然后那些容忍这个 taint 的 pods 将永远不会被驱逐。另外，一个 `effect` 是 `NoExecute` 的 toleration 可以指定一个可选的 `tolerationSeconds` 字段，以指示当节点 taint 被添加之后 pod 运行在节点的时长，如：
 
 ```
 tolerations:
