@@ -13,7 +13,8 @@
     - [ ] Kubeadm 部署流程（主要针对当前的二进制方式做对比，Kubeadm 现在还是黑盒，所以一直没有使用它管理部署） 
 + [ ] Kubernetes 网络方案（主要是当前使用 Calico + Flannel 生产实践以及原理总结）
 + [ ] 需要补全的系列短文
-    - [ ] Taints and Tolerations
+    - [x] Taints and Tolerations
+        - [ ] 延伸 -> Admission Controllers 扩展
     - [ ] Reserve Compute Resources for System Daemons
     - [ ] Using sysctls in a Kubernetes Cluster
     - [ ] Kubernetes 镜像和容器 GC 机制
