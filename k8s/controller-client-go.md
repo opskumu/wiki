@@ -6,7 +6,7 @@
 
 下图展示了 client—go 库中各种组件工作机制，以及和你编写的自定义控制器的交互点。
 
-![](client-go-controller-interaction.jpeg)
+![](images/client-go-controller-interaction.jpeg)
 
 ## client-go 组件
 
