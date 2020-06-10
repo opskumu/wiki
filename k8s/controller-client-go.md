@@ -4,7 +4,7 @@
 
 [client-go](https://github.com/kubernetes/client-go/) 库囊括了各种机制，你可以在开发自定义控制器的时候使用它们。这些机制定义在 [tools/cache](https://github.com/kubernetes/client-go/tree/master/tools/cache) 目录下。
 
-下图展示了 client—go 库中各种组件工作机制，以及和你编写的自定义控制器的交互点。
+下图展示了 client—go 库中各组件工作机制，以及和你编写的自定义控制器的交互点。
 
 ![](images/client-go-controller-interaction.jpeg)
 
