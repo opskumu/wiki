@@ -43,6 +43,8 @@
 * 网络方案
     * [Calico BGP 网络（v2.6.x）](k8s/calico.md)
     * [Kubelet CNI 源码解析](k8s/src-kubelet-cni.md)
+* client-go
+    * [client-go 幕后](k8s/controller-client-go.md)
 * [Helm](k8s/helm.md)
     * [Helm 架构](k8s/helm-arch.md)
     * [Helm 快速上手](k8s/helm-quickstart.md)
