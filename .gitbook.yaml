@@ -1,5 +1,5 @@
 root: ./
 
 structure:
-  readme: todo.md
+  readme: SUMMARY.md
   summary: SUMMARY.md
