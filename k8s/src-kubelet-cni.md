@@ -27,8 +27,6 @@ type CNI interface {
 }
 ```
 
-![](http://upload-images.jianshu.io/upload_images/3611024-8026258c0424f952.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
 ### 网络初始化
 
 Kubelet 启动过程中针对网络主要做以下步骤，分别是探针获取当前环境的网络插件以及初始化网络。
@@ -307,8 +305,6 @@ type NetworkPlugin interface {
 ... ...
 }
 ```
-
-![](http://upload-images.jianshu.io/upload_images/3611024-c344ae56935dc1b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 以下为 Kubelet 调用 CNI 网络的具体操作实现：
 
