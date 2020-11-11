@@ -40,7 +40,8 @@
 * 集群组件
     * [Kubelet](k8s/kubelet.md)
 * 网络方案
-    * [Calico BGP 网络（v2.6.x）](k8s/calico.md)
+    * [网络策略](k8s/network-policies.md)
+    * ~~[Calico BGP 网络（v2.6.x）](k8s/calico.md)~~
     * [Kubelet CNI 源码解析](k8s/src-kubelet-cni.md)
 * client-go
     * [client-go 背后机制](k8s/controller-client-go.md)
