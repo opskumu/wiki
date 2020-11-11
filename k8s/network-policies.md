@@ -55,9 +55,11 @@ spec:
 
 + `egress`：每个 NetworkPolicy 可以包括允许的 egress 规则列表。每个规则允许匹配到 `to` 和 `ports` 部分的流量。示例中包含一个规则，表示匹配的 Pod 可以访问任何在网段 10.0.0.0/24 中的 5978 TCP 端口。
 
-示例规则综合起来表示，隔离 default 空间下标签为 "role=db" 的 pods 的 ingress 和 egress 流量。针对 ingress 流量，针对 default 空间下所有含有 "role=db" 的 pods 的 6379 端口，允许 "default" 空间下任何标签为 "role=frontend" 的 pod 访问，允许含有 "project=myproject" 标签的空间下的任何 pod 访问，还允许 172.17.0.0/16 网段中除了 172.17.1.0/24 段的 IP 访问。出口流量则允许 default 空间下含有 "role=db" 的 pod 访问网段为 10.0.0.0/24 并且端口为 5978 的服务。
+示例规则综合起来表示，隔离 default 空间下标签为 "role=db" 的 pods 的 ingress 和 egress 流量。对于 ingress 流量，针对 default 空间下所有含有 "role=db" 的 pods 的 6379 端口访问，规则允许 "default" 空间下任何标签为 "role=frontend" 的 pod 访问，允许含有 "project=myproject" 标签的空间下的任何 pod 访问，还允许 172.17.0.0/16 网段中除了 172.17.1.0/24 段的 IP 访问。出口流量则允许 default 空间下含有 "role=db" 的 pod 访问网段为 10.0.0.0/24 并且端口为 5978 的服务。
 
 ## `to` 和 `from` 选择器
+
+支持以下四种方式过滤选择：
 
 + `podSelector`：在 NetworkPolicy 同一空间下选择 Pods，作为 ingress 源或者 egress 目的地
 + `namespaceSelector`：选择特定空间下的所有 Pods，作为 ingress 源或者 egress 目的地
